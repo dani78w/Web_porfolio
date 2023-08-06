@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -60,6 +60,80 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var meses = [
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
+  ];
+
+  @override
+  Widget timeline() {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        Container(
+            alignment: Alignment.bottomCenter,
+            height: 80,
+        width: 28,
+        ),
+        for (var i = 0; i < meses.length; i++)
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 80,
+            color: Colors.transparent,
+            child: Row(children: [
+              Container(
+                height: 100,
+                width: 35,
+                child: Column(
+                  children: [
+                    Container(
+                      child: Center(
+                        child: Container(
+                          height: 50,
+                          width: 3,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 10,
+                      width: 3,
+                      color: Colors.transparent,
+                    ),
+                    Text(
+                      meses[i],
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                      textAlign: TextAlign.end,
+                    ),
+                    Container(
+                      height: 10,
+                      width: 3,
+                      color: Colors.transparent,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 50,
+                width: 50,
+                color: Colors.transparent,
+              ),
+            ]),
+          ),
+      ],
+    );
+  }
+
   int _counter = 0;
   int _counter2 = 0;
   double _rotation = 0;
@@ -85,13 +159,14 @@ class _MyHomePageState extends State<MyHomePage> {
 </svg>
     ''';
   var _opacidad = 0.0;
+  var aux = true;
 
   @override
   Widget build(BuildContext context) {
     double opacidad = _opacidad;
     var fondo = [
-      Colors.teal.shade100.withOpacity(1),
-      Colors.purpleAccent.withOpacity(0.0),
+      Colors.teal.shade100.withOpacity(0.5),
+      Colors.purpleAccent.withOpacity(0.1),
     ];
     double fontSizeInSp = 40.0;
     double fontSize = fontSizeInSp * MediaQuery.textScaleFactorOf(context);
@@ -122,7 +197,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-
     Future desenfoque() async {
       await Future.delayed(Duration(seconds: 14));
       if (_blurEffect < 10) {
@@ -135,19 +209,16 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-
     Future parpadeo() async {
-
-        if (_color == 1) {
-          setState(() {
-            _color = 0;
-          });
-        } else {
-          setState(() {
-            _color = 1;
-          });
-        }
-
+      if (_color == 1) {
+        setState(() {
+          _color = 0;
+        });
+      } else {
+        setState(() {
+          _color = 1;
+        });
+      }
     }
 
     Future animate() async {
@@ -204,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var tam = 60;
     Future out() async {
       await Future.delayed(Duration(seconds: 7));
-      for (int i = 31; i < tam ; i++) {
+      for (int i = 31; i < tam; i++) {
         setState(() {
           _tam = i;
         });
@@ -212,13 +283,79 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-
-      mostrarFondo();
-      animate();
-      desenfoque();
-
+    mostrarFondo();
+    animate();
+    desenfoque();
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          toolbarHeight: 100,
+          backgroundColor: Colors.transparent,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.person, color: Colors.white),
+                onPressed: () {},
+              ),
+              Text(
+                "About me",
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ],
+          ),
+          actions: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.file_copy, color: Colors.white),
+                  onPressed: () {},
+                ),
+                Text(
+                  "MY CV",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                ),
+              ],
+            ),
+            Container(
+              width: 20,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.email, color: Colors.white),
+                  onPressed: () {},
+                ),
+                Text(
+                  "CONTACT",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                ),
+              ],
+            ),
+            Container(
+              width: 20,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.computer, color: Colors.white),
+                  onPressed: () {},
+                ),
+                Text(
+                  "GITHUB",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                ),
+              ],
+            ),
+            Container(
+              width: 20,
+            ),
+          ],
+        ),
         backgroundColor: Colors.teal,
         body: Center(
           child: GestureDetector(
@@ -227,70 +364,95 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.center,
                 fit: StackFit.loose,
                 children: [
+                  if (aux == true)
                     for (var i = 1; i < 8; i++)
-                    AnimatedContainer(
-                      transform: Matrix4.rotationZ(_rotation * i),
-                      transformAlignment: Alignment.center,
-                      width: _counter.toDouble() / (i * 0.7),
-                      height: _counter2.toDouble() / (i * 0.7),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
+                      AnimatedContainer(
+                        transform: Matrix4.rotationZ(_rotation * i),
+                        transformAlignment: Alignment.center,
+                        width: _counter.toDouble() / (i * 0.7),
+                        height: _counter2.toDouble() / (i * 0.7),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        duration: Duration(milliseconds: 300 * i),
+                        curve: Curves.easeInExpo,
+                        child: SvgPicture.string(svgString),
                       ),
-                      duration: Duration(milliseconds: 300 * i),
-                      curve: Curves.easeInExpo,
-                      child: SvgPicture.string(svgString),
-                    )
-                  ,
+                  if (aux == true)
                     BackdropFilter(
-                      filter: ImageFilter.blur(
-                          sigmaX: _blurEffect, sigmaY: _blurEffect),
-                      // Ajusta los valores según prefieras
-                      child: Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: fondo)),
-                          child: Container(
-                              alignment: Alignment.center,
-                              child: Flex(
-                                clipBehavior: Clip.antiAlias,
-                                direction: Axis.horizontal,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Flexible(
-                                    flex: 7,
-                                    child: Text(
-                                      _textoAnimado,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        letterSpacing: 10,
-                                        fontSize: fontSize,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                        filter: ImageFilter.blur(
+                            sigmaX: _blurEffect, sigmaY: _blurEffect),
+                        // Ajusta los valores según prefieras
+                        child: Container(
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: fondo)),
+                            child: Container(
+                                alignment: Alignment.center,
+                                child: Flex(
+                                  clipBehavior: Clip.antiAlias,
+                                  direction: Axis.horizontal,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      flex: 1,
+                                      child: Text(""),
+                                    ),
+                                    Flexible(
+                                      flex: 10,
+                                      child: Text(
+                                        _textoAnimado,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          letterSpacing: 10,
+                                          fontSize: fontSize,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Flexible(
-                                      flex: 1,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 30.toDouble(),
-                                        width: 30.toDouble(),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white
-                                              .withOpacity(_color.toDouble()),
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                      ))
-                                ],
-                              )))),
-
-
+                                    Flexible(
+                                        flex: 1,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          constraints: BoxConstraints(
+                                            maxWidth: 30,
+                                            maxHeight: 30,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white
+                                                .withOpacity(_color.toDouble()),
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                        ))
+                                  ],
+                                )))),
+                  Container(
+                      alignment: Alignment.bottomCenter,
+                      padding: EdgeInsets.only(bottom: 15, left: 30),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 30,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.1),
+                                width: 1,
+                              ),
+                          ),
+                          )
+                        ],
+                      )),
+                  timeline(),
                 ]),
           ),
         ));
