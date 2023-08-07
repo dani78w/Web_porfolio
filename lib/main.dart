@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_and_expandable_list/sticky_and_expandable_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,15 +76,72 @@ class _MyHomePageState extends State<MyHomePage> {
     "Dic",
   ];
 
+
+
+
+
+
+  int _counter = 0;
+  int _counter2 = 0;
+  double _rotation = 0;
+  int _color = 0;
+  int _fade = 1 ;
+  double _blurEffect = 0;
+
+  String _textoAnimado = '';
+  String textoFinal = "DANIEL";
+  final apellido = "ARRIBAS";
+  final subapellido = "SORANDO";
+  int _tam = 30;
+
+  final svgString = '''
+      <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
+<defs>
+<linearGradient  x1="854" y1="861" x2="504" y2="1552" gradientUnits="userSpaceOnUse">
+<stop/>
+<stop offset="0.234375" stop-opacity="0.973958"/>
+<stop offset="1" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
+    ''';
+  var _opacidad = 0.0;
+  var aux = true;
+
+  var panel=false;
   @override
   Widget timeline() {
+    ScrollController scrollController = ScrollController(keepScrollOffset: false, initialScrollOffset: -MediaQueryData.fromView(window).size.width);
+
+    scrollController.addListener(() {
+
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        print("Llegaste al final");
+
+
+        setState(() {
+          panel=true;
+        });
+
+      }else{
+
+        setState(() {
+          panel=false;
+        });
+      }
+
+    });
+
     return ListView(
+      controller: scrollController,
       scrollDirection: Axis.horizontal,
+    physics: const ClampingScrollPhysics(),
       children: [
         Container(
-            alignment: Alignment.bottomCenter,
-            height: 80,
-        width: 28,
+          alignment: Alignment.bottomCenter,
+          height: 80,
+          width: 28,
         ),
         for (var i = 0; i < meses.length; i++)
           Container(
@@ -130,36 +188,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ]),
           ),
+        Container(
+          height: 50,
+          width: MediaQueryData.fromWindow(window).size.width -111,
+          color: Colors.transparent,
+        ),
       ],
     );
   }
 
-  int _counter = 0;
-  int _counter2 = 0;
-  double _rotation = 0;
-  int _color = 0;
-  double _blurEffect = 0;
-
-  String _textoAnimado = '';
-  String textoFinal = "DANIEL";
-  final apellido = "ARRIBAS";
-  final subapellido = "SORANDO";
-  int _tam = 30;
-
-  final svgString = '''
-      <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
-<defs>
-<linearGradient id="paint0_linear_411_25" x1="854" y1="861" x2="504" y2="1552" gradientUnits="userSpaceOnUse">
-<stop/>
-<stop offset="0.234375" stop-opacity="0.973958"/>
-<stop offset="1" stop-opacity="0"/>
-</linearGradient>
-</defs>
-</svg>
-    ''';
-  var _opacidad = 0.0;
-  var aux = true;
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_opacidad < 1) {
         for (int i = 0; i < 9; i++) {
           setState(() {
-            _opacidad = (i as double) / 10;
+            _opacidad = (i ) / 10;
           });
           await Future.delayed(Duration(milliseconds: 20));
         }
@@ -198,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     Future desenfoque() async {
-      await Future.delayed(Duration(seconds: 14));
+      await Future.delayed(Duration(seconds: 7));
       if (_blurEffect < 10) {
         for (int i = 0; i < 50; i++) {
           setState(() {
@@ -220,6 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     }
+    Future fade() async {
+      await Future.delayed(Duration(seconds: 6));
+      _fade = 0;
+    }
 
     Future animate() async {
       if (_counter == MediaQuery.of(context).size.width.toInt()) {
@@ -237,44 +278,42 @@ class _MyHomePageState extends State<MyHomePage> {
           _rotation = pi / 4;
         });
       }
+      await Future.delayed(Duration(seconds: 1));
 
       if (_textoAnimado != textoFinal) {
-        setState(() {
+
           _textoAnimado = _textoAnimado + textoFinal[_textoAnimado.length];
+
           parpadeo();
-        });
       }
 
       if (_textoAnimado == textoFinal) {
         if (_textoAnimado == "DANIEL") {
-          await Future.delayed(Duration(seconds: 1));
 
-          setState(() async {
+
             _textoAnimado = "";
             textoFinal = apellido;
-          });
+
         }
         if (_textoAnimado == apellido) {
-          setState(() async {
-            await Future.delayed(Duration(seconds: 1));
+
 
             _textoAnimado = "";
             textoFinal = subapellido;
-          });
+
         }
         if (_textoAnimado == subapellido) {
-          setState(() async {
-            await Future.delayed(Duration(seconds: 1));
+
             _textoAnimado = "";
             textoFinal = "DANIEL ARRIBAS SORANDO";
-          });
+
         }
       }
     }
 
     var tam = 60;
     Future out() async {
-      await Future.delayed(Duration(seconds: 7));
+
       for (int i = 31; i < tam; i++) {
         setState(() {
           _tam = i;
@@ -285,7 +324,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     mostrarFondo();
     animate();
+    fade();
     desenfoque();
+
 
     return Scaffold(
         extendBodyBehindAppBar: true,
@@ -401,7 +442,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: [
                                     Flexible(
                                       flex: 1,
-                                      child: Text(""),
+                                      child: Text("/ ",
+                                          style: TextStyle(
+                                              fontSize: fontSize,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white.withOpacity(_fade.toDouble())))
                                     ),
                                     Flexible(
                                       flex: 10,
@@ -433,6 +478,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ))
                                   ],
                                 )))),
+                  if (panel == true)
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.black,Colors.black,Colors.redAccent],)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "[ 🏁 ]",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          letterSpacing: 10,
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+
                   Container(
                       alignment: Alignment.bottomCenter,
                       padding: EdgeInsets.only(bottom: 15, left: 30),
