@@ -45,15 +45,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -61,8 +52,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  int _counter2 = 0;
+  double _rotation = 0;
+  int _color = 0;
+  int _fade = 1;
+  double _blurEffect = 0;
+  String _textoAnimado = '';
+  String textoFinal = "DANIEL";
+  final apellido = "ARRIBAS";
+  final subapellido = "SORANDO";
+
+  final svgString = '''
+      <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
+      <defs>
+      <linearGradient  x1="854" y1="861" x2="504" y2="1552" gradientUnits="userSpaceOnUse">
+      <stop/>
+      <stop offset="0.234375" stop-opacity="0.973958"/>
+      <stop offset="1" stop-opacity="0"/>
+      </linearGradient>
+      </defs>
+      </svg>
+          ''';
+  var _opacidad = 0.0;
+  var aux = true;
   var meses = [
-    "Ene",
+    "HOME",
     "Feb",
     "Mar",
     "Abr",
@@ -74,132 +90,132 @@ class _MyHomePageState extends State<MyHomePage> {
     "Oct",
     "Nov",
     "Dic",
+    "Paca",
   ];
 
+  var mesSeleccionado = 0;
 
-
-
-
-
-  int _counter = 0;
-  int _counter2 = 0;
-  double _rotation = 0;
-  int _color = 0;
-  int _fade = 1 ;
-  double _blurEffect = 0;
-
-  String _textoAnimado = '';
-  String textoFinal = "DANIEL";
-  final apellido = "ARRIBAS";
-  final subapellido = "SORANDO";
-  int _tam = 30;
-
-  final svgString = '''
-      <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
-<defs>
-<linearGradient  x1="854" y1="861" x2="504" y2="1552" gradientUnits="userSpaceOnUse">
-<stop/>
-<stop offset="0.234375" stop-opacity="0.973958"/>
-<stop offset="1" stop-opacity="0"/>
-</linearGradient>
-</defs>
-</svg>
-    ''';
-  var _opacidad = 0.0;
-  var aux = true;
-
-  var panel=false;
   @override
   Widget timeline() {
-    ScrollController scrollController = ScrollController(keepScrollOffset: false, initialScrollOffset: -MediaQueryData.fromView(window).size.width);
+    ScrollController scrollController = ScrollController(
+        keepScrollOffset: false,
+        initialScrollOffset: -MediaQueryData.fromView(window).size.width);
+    var rangos = [];
+
+    for (var i = 0; i < meses.length; i++) {
+      var max = (i * 80) + 15;
+      var min = (i * 80) - 15;
+      rangos.add([min, max]);
+    }
 
     scrollController.addListener(() {
+      for (var i = 0; i < rangos.length; i++) {
+        if (scrollController.position.pixels >= rangos[i][0] &&
+            scrollController.position.pixels <= rangos[i][1]) {
 
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        print("Llegaste al final");
-
-
-        setState(() {
-          panel=true;
-        });
-
-      }else{
-
-        setState(() {
-          panel=false;
-        });
+          if(mesSeleccionado != i) {
+            print("Estoy en el mes: " +
+                meses[i] +
+                " | PANTALLA :" +
+                (i + 1).toString());
+            setState(() {
+              mesSeleccionado = i;
+            });
+          }
+        }
       }
-
     });
 
-    return ListView(
-      controller: scrollController,
-      scrollDirection: Axis.horizontal,
-    physics: const ClampingScrollPhysics(),
+    return Stack(
       children: [
         Container(
-          alignment: Alignment.bottomCenter,
-          height: 80,
-          width: 28,
-        ),
-        for (var i = 0; i < meses.length; i++)
-          Container(
             alignment: Alignment.bottomCenter,
-            height: 80,
-            color: Colors.transparent,
-            child: Row(children: [
+            padding: EdgeInsets.only(bottom: 15, left: 30),
+            child: Row(
+              children: [
+                Container(
+                  width: 30,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                )
+              ],
+            )),
+        ListView(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
+          children: [
+            Container(
+              alignment: Alignment.bottomCenter,
+              height: 80,
+              width: 28,
+            ),
+            for (var i = 0; i < meses.length; i++)
               Container(
-                height: 100,
-                width: 35,
-                child: Column(
-                  children: [
-                    Container(
-                      child: Center(
-                        child: Container(
-                          height: 50,
-                          width: 3,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 10,
-                      width: 3,
-                      color: Colors.transparent,
-                    ),
-                    Text(
-                      meses[i],
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                      textAlign: TextAlign.end,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 3,
-                      color: Colors.transparent,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 50,
-                width: 50,
+                alignment: Alignment.bottomCenter,
+                height: 80,
                 color: Colors.transparent,
+                child: Row(children: [
+                  Container(
+                    height: 100,
+                    width: 35,
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Center(
+                            child: Container(
+                              height: 50,
+                              width: 3,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 10,
+                          width: 3,
+                          color: Colors.transparent,
+                        ),
+                        Text(
+                          meses[i],
+                          style: TextStyle(color: Colors.white, fontSize: 10),
+                          textAlign: TextAlign.end,
+                        ),
+                        Container(
+                          height: 10,
+                          width: 3,
+                          color: Colors.transparent,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 50,
+                    color: Colors.transparent,
+                  ),
+                ]),
               ),
-            ]),
-          ),
-        Container(
-          height: 50,
-          width: MediaQueryData.fromWindow(window).size.width -111,
-          color: Colors.transparent,
-        ),
+            Container(
+              height: 50,
+              width: MediaQueryData.fromWindow(window).size.width - 111,
+              color: Colors.transparent,
+            ),
+          ],
+        )
       ],
     );
   }
 
-
   @override
-  Widget build(BuildContext context) {
+  Widget fondo() {
+    int _tam = 30;
     double opacidad = _opacidad;
     var fondo = [
       Colors.teal.shade100.withOpacity(0.5),
@@ -207,27 +223,12 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
     double fontSizeInSp = 40.0;
     double fontSize = fontSizeInSp * MediaQuery.textScaleFactorOf(context);
-    /*
-    if (_counter >= 600) {
-      setState(() {
-        _counter = 50;
-        _counter2 = 50;
-        _rotation = 360 ;
-      });
-    }
-  */
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     Future mostrarFondo() async {
       await Future.delayed(Duration(seconds: 1));
       if (_opacidad < 1) {
         for (int i = 0; i < 9; i++) {
           setState(() {
-            _opacidad = (i ) / 10;
+            _opacidad = (i) / 10;
           });
           await Future.delayed(Duration(milliseconds: 20));
         }
@@ -257,6 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     }
+
     Future fade() async {
       await Future.delayed(Duration(seconds: 6));
       _fade = 0;
@@ -281,39 +283,29 @@ class _MyHomePageState extends State<MyHomePage> {
       await Future.delayed(Duration(seconds: 1));
 
       if (_textoAnimado != textoFinal) {
+        _textoAnimado = _textoAnimado + textoFinal[_textoAnimado.length];
 
-          _textoAnimado = _textoAnimado + textoFinal[_textoAnimado.length];
-
-          parpadeo();
+        parpadeo();
       }
 
       if (_textoAnimado == textoFinal) {
         if (_textoAnimado == "DANIEL") {
-
-
-            _textoAnimado = "";
-            textoFinal = apellido;
-
+          _textoAnimado = "";
+          textoFinal = apellido;
         }
         if (_textoAnimado == apellido) {
-
-
-            _textoAnimado = "";
-            textoFinal = subapellido;
-
+          _textoAnimado = "";
+          textoFinal = subapellido;
         }
         if (_textoAnimado == subapellido) {
-
-            _textoAnimado = "";
-            textoFinal = "DANIEL ARRIBAS SORANDO";
-
+          _textoAnimado = "";
+          textoFinal = "DANIEL ARRIBAS SORANDO";
         }
       }
     }
 
     var tam = 60;
     Future out() async {
-
       for (int i = 31; i < tam; i++) {
         setState(() {
           _tam = i;
@@ -326,8 +318,6 @@ class _MyHomePageState extends State<MyHomePage> {
     animate();
     fade();
     desenfoque();
-
-
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -441,13 +431,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Flexible(
-                                      flex: 1,
-                                      child: Text("/ ",
-                                          style: TextStyle(
-                                              fontSize: fontSize,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white.withOpacity(_fade.toDouble())))
-                                    ),
+                                        flex: 1,
+                                        child: Text("/ ",
+                                            style: TextStyle(
+                                                fontSize: fontSize,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white.withOpacity(
+                                                    _fade.toDouble())))),
                                     Flexible(
                                       flex: 10,
                                       child: Text(
@@ -478,28 +468,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ))
                                   ],
                                 )))),
-                  if (panel == true)
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Colors.black,Colors.black,Colors.redAccent],)),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "[ 🏁 ]",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          letterSpacing: 10,
-                          fontSize: fontSize,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-
                   Container(
                       alignment: Alignment.bottomCenter,
                       padding: EdgeInsets.only(bottom: 15, left: 30),
@@ -515,14 +483,55 @@ class _MyHomePageState extends State<MyHomePage> {
                                 color: Colors.white.withOpacity(0.1),
                                 width: 1,
                               ),
-                          ),
+                            ),
                           )
                         ],
                       )),
-                  timeline(),
                 ]),
           ),
         ));
+  }
+
+  @override
+  Widget pantallas(int pantalla) {
+    if (pantalla == 0) {
+      setState(() {});
+      return
+        fondo();
+    } else {
+      return Center(
+        child: Container(
+          margin: EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            color: Colors.black,
+          ),
+          child: Center(
+              child: Text(
+            "PROYECTO \n " + meses[pantalla].toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 50,
+              color: Colors.white,
+            ),
+          )),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Stack(alignment: Alignment.center, fit: StackFit.loose, children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+          ),
+        ),
+        pantallas(mesSeleccionado),
+        timeline()
+      ]),
+    );
   }
 }
 
