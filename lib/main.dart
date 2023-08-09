@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:sticky_and_expandable_list/sticky_and_expandable_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -64,6 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final subapellido = "SORANDO";
 
   final svgString = '''
+      <svg width="673" height="502" viewBox="0 0 673 502" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M558 500L666.266 432.932C669.209 431.109 671 427.894 671 424.431V309" stroke="white" stroke-width="4"/>
+<path d="M115 2L6.73387 69.0675C3.79074 70.8907 2 74.1065 2 77.5686L2 193" stroke="white" stroke-width="4"/>
+<path d="M115 2L6.73387 69.0675C3.79074 70.8907 2 74.1065 2 77.5686L2 193" stroke="white" stroke-width="4"/>
+</svg>
+          ''';
+  /*final svgString = '''
       <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
       <defs>
@@ -74,26 +82,22 @@ class _MyHomePageState extends State<MyHomePage> {
       </linearGradient>
       </defs>
       </svg>
-          ''';
+          ''';*/
+  var degradado = [
+    Colors.teal.shade100.withOpacity(0.5),
+    Colors.purpleAccent.withOpacity(0.1),
+  ];
   var _opacidad = 0.0;
   var aux = true;
   var meses = [
     "HOME",
-    "Feb",
-    "Mar",
-    "Abr",
-    "May",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dic",
-    "Paca",
+    "PR 1",
+    "PR 2",
+    "PR 3",
   ];
 
   var mesSeleccionado = 0;
+  double rounded = 400;
 
   @override
   Widget timeline() {
@@ -112,8 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
       for (var i = 0; i < rangos.length; i++) {
         if (scrollController.position.pixels >= rangos[i][0] &&
             scrollController.position.pixels <= rangos[i][1]) {
-
-          if(mesSeleccionado != i) {
+          if (mesSeleccionado != i) {
             print("Estoy en el mes: " +
                 meses[i] +
                 " | PANTALLA :" +
@@ -137,77 +140,91 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 30,
                   height: 100,
                   decoration: BoxDecoration(
+
                     color: Colors.white.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: Colors.white.withOpacity(0.1),
                       width: 1,
                     ),
+                    backgroundBlendMode: BlendMode.difference,
                   ),
                 )
               ],
             )),
-        ListView(
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          physics: const ClampingScrollPhysics(),
-          children: [
-            Container(
-              alignment: Alignment.bottomCenter,
-              height: 80,
-              width: 28,
-            ),
-            for (var i = 0; i < meses.length; i++)
+        Container(
+          alignment: Alignment.bottomCenter,
+          height: 100,
+          margin: EdgeInsets.only(
+              top: MediaQueryData.fromView(window).size.height - 100),
+          child: ListView(
+            controller: scrollController,
+            scrollDirection: Axis.horizontal,
+            physics: const ClampingScrollPhysics(),
+            children: [
               Container(
                 alignment: Alignment.bottomCenter,
                 height: 80,
-                color: Colors.transparent,
-                child: Row(children: [
-                  Container(
-                    height: 100,
-                    width: 35,
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Center(
-                            child: Container(
-                              height: 50,
-                              width: 3,
-                              color: Colors.white,
+                width: 28,
+              ),
+              for (var i = 0; i < meses.length; i++)
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 80,
+                  color: Colors.transparent,
+                  child: Row(children: [
+                    Container(
+                      height: 100,
+                      width: 35,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Center(
+                              child: Container(
+                                height: 50,
+                                width: 3,
+
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  backgroundBlendMode: BlendMode.difference,
+                                )
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 10,
-                          width: 3,
-                          color: Colors.transparent,
-                        ),
-                        Text(
-                          meses[i],
-                          style: TextStyle(color: Colors.white, fontSize: 10),
-                          textAlign: TextAlign.end,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 3,
-                          color: Colors.transparent,
-                        ),
-                      ],
+                          Container(
+                            height: 10,
+                            width: 3,
+                            color: Colors.transparent,
+                          ),
+                          Text(
+                            meses[i],
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                            textAlign: TextAlign.end,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 3,
+                            color: Colors.transparent,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.transparent,
-                  ),
-                ]),
+                    Container(
+                      height: 50,
+                      width: 50,
+                      color: Colors.transparent,
+                    ),
+                  ]),
+                ),
+              Container(
+                height: 50,
+                width: MediaQueryData.fromWindow(window).size.width - 111,
+                color: Colors.transparent,
+                alignment: Alignment.centerLeft,
               ),
-            Container(
-              height: 50,
-              width: MediaQueryData.fromWindow(window).size.width - 111,
-              color: Colors.transparent,
-            ),
-          ],
+            ],
+          ),
         )
       ],
     );
@@ -215,12 +232,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget fondo() {
-    int _tam = 30;
-    double opacidad = _opacidad;
     var fondo = [
       Colors.teal.shade100.withOpacity(0.5),
-      Colors.purpleAccent.withOpacity(0.1),
+      Colors.tealAccent,
     ];
+    int _tam = 30;
+    double opacidad = _opacidad;
+
     double fontSizeInSp = 40.0;
     double fontSize = fontSizeInSp * MediaQuery.textScaleFactorOf(context);
     Future mostrarFondo() async {
@@ -317,77 +335,9 @@ class _MyHomePageState extends State<MyHomePage> {
     mostrarFondo();
     animate();
     fade();
-    desenfoque();
+    //desenfoque();
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          toolbarHeight: 100,
-          backgroundColor: Colors.transparent,
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(Icons.person, color: Colors.white),
-                onPressed: () {},
-              ),
-              Text(
-                "About me",
-                style: TextStyle(color: Colors.white, fontSize: 10),
-              ),
-            ],
-          ),
-          actions: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.file_copy, color: Colors.white),
-                  onPressed: () {},
-                ),
-                Text(
-                  "MY CV",
-                  style: TextStyle(color: Colors.white, fontSize: 10),
-                ),
-              ],
-            ),
-            Container(
-              width: 20,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.email, color: Colors.white),
-                  onPressed: () {},
-                ),
-                Text(
-                  "CONTACT",
-                  style: TextStyle(color: Colors.white, fontSize: 10),
-                ),
-              ],
-            ),
-            Container(
-              width: 20,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.computer, color: Colors.white),
-                  onPressed: () {},
-                ),
-                Text(
-                  "GITHUB",
-                  style: TextStyle(color: Colors.white, fontSize: 10),
-                ),
-              ],
-            ),
-            Container(
-              width: 20,
-            ),
-          ],
-        ),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.black,
         body: Center(
           child: GestureDetector(
             onTap: () {},
@@ -396,14 +346,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: StackFit.loose,
                 children: [
                   if (aux == true)
-                    for (var i = 1; i < 8; i++)
+                    for (var i = 1; i < 4; i++)
                       AnimatedContainer(
                         transform: Matrix4.rotationZ(_rotation * i),
                         transformAlignment: Alignment.center,
-                        width: _counter.toDouble() / (i * 0.7),
-                        height: _counter2.toDouble() / (i * 0.7),
+                        width: _counter.toDouble() / (i * 0.9),
+                        height: _counter2.toDouble() / (i * 0.9),
                         decoration: BoxDecoration(
-                          color: Colors.transparent,
+                          color: Colors.black.withOpacity(0),
                         ),
                         duration: Duration(milliseconds: 300 * i),
                         curve: Curves.easeInExpo,
@@ -417,11 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: fondo)),
+
                             child: Container(
                                 alignment: Alignment.center,
                                 child: Flex(
@@ -468,67 +414,118 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ))
                                   ],
                                 )))),
-                  Container(
-                      alignment: Alignment.bottomCenter,
-                      padding: EdgeInsets.only(bottom: 15, left: 30),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.1),
-                                width: 1,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
                 ]),
           ),
         ));
   }
 
   @override
-  Widget pantallas(int pantalla) {
+  Widget proyecto(int proyecto) {
+    var proyectos = ['pr1.jpg', 'p2.jpg', 'postit.jpg', 'postit.jpg'];
+
+    return ListView(
+      children: [
+        Wrap(
+    children: [
+          Image.asset('assets/'+ proyectos[proyecto-1], fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
+
+      ],
+    )],
+    );
+  }
+
+  @override
+  Widget diapositivas(int pantalla) {
+    var degradado = [
+      Colors.teal.shade100.withOpacity(0.5),
+      Colors.purpleAccent.withOpacity(0.1),
+    ];
+
     if (pantalla == 0) {
-      setState(() {});
-      return
-        fondo();
+      return fondo();
     } else {
-      return Center(
-        child: Container(
-          margin: EdgeInsets.all(0),
-          decoration: BoxDecoration(
-            color: Colors.black,
-          ),
-          child: Center(
-              child: Text(
-            "PROYECTO \n " + meses[pantalla].toString(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 50,
-              color: Colors.white,
-            ),
-          )),
-        ),
-      );
+      return proyecto(pantalla);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Stack(alignment: Alignment.center, fit: StackFit.loose, children: [
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        toolbarHeight: 100,
+        backgroundColor: Colors.transparent,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: Icon(Icons.person, color: Colors.white),
+              onPressed: () {},
+            ),
+            Text(
+              "About me",
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+          ],
+        ),
+        actions: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.file_copy, color: Colors.white),
+                onPressed: () {},
+              ),
+              Text(
+                "MY CV",
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ],
+          ),
+          Container(
+            width: 20,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.email, color: Colors.white),
+                onPressed: () {},
+              ),
+              Text(
+                "CONTACT",
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ],
+          ),
+          Container(
+            width: 20,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.computer, color: Colors.white),
+                onPressed: () {},
+              ),
+              Text(
+                "GITHUB",
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ],
+          ),
+          Container(
+            width: 20,
+          ),
+        ],
+      ),
+      body: Stack(alignment: Alignment.center, fit: StackFit.loose, children: [
         Container(
           decoration: BoxDecoration(
             color: Colors.black,
           ),
         ),
-        pantallas(mesSeleccionado),
+        diapositivas(mesSeleccionado),
         timeline()
       ]),
     );
