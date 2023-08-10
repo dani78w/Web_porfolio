@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -54,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int _counter = 0;
   int _counter2 = 0;
   double _rotation = 0;
@@ -97,11 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
     "PR 2",
     "PR 3",
   ];
-
-
-
-
-
 
   var mesSeleccionado = 0;
   double rounded = 400;
@@ -345,108 +339,110 @@ class _MyHomePageState extends State<MyHomePage> {
         extendBodyBehindAppBar: true,
         body: Center(
           child: GestureDetector(
-            onTap: () {},
-            child:
-            ListView(
-              children: [
-                Container(
-                  alignment: Alignment.topCenter,
-                  color: Colors.black,
-                  height: MediaQuery.of(context).size.height-300,
-                  width: MediaQuery.of(context).size.width,
-                  child:Stack(
-                      alignment: Alignment.center,
-                      fit: StackFit.loose,
-                      children: [
-                        if (aux == true)
-                          for (var i = 1; i < 4; i++)
-                            AnimatedContainer(
-                              transform: Matrix4.rotationZ(_rotation * i),
-                              transformAlignment: Alignment.center,
-                              width: _counter.toDouble() / (i * 0.9),
-                              height: _counter2.toDouble() / (i * 0.9),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0),
+              onTap: () {},
+              child: ListView(
+                children: [
+                  Container(
+                    alignment: Alignment.topCenter,
+                    color: Colors.black,
+                    height: MediaQuery.of(context).size.height - 300,
+                    width: MediaQuery.of(context).size.width,
+                    child: Stack(
+                        alignment: Alignment.center,
+                        fit: StackFit.loose,
+                        children: [
+                          if (aux == true)
+                            for (var i = 1; i < 4; i++)
+                              AnimatedContainer(
+                                transform: Matrix4.rotationZ(_rotation * i),
+                                transformAlignment: Alignment.center,
+                                width: _counter.toDouble() / (i * 0.9),
+                                height: _counter2.toDouble() / (i * 0.9),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0),
+                                ),
+                                duration: Duration(milliseconds: 300 * i),
+                                curve: Curves.easeInExpo,
+                                child: SvgPicture.string(svgString),
                               ),
-                              duration: Duration(milliseconds: 300 * i),
-                              curve: Curves.easeInExpo,
-                              child: SvgPicture.string(svgString),
-                            ),
-                        if (aux == true)
-                          BackdropFilter(
-                              filter: ImageFilter.blur(
-                                  sigmaX: _blurEffect, sigmaY: _blurEffect),
-                              // Ajusta los valores según prefieras
-                              child: Container(
-                                  height: MediaQuery.of(context).size.height,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Flex(
-                                        clipBehavior: Clip.antiAlias,
-                                        direction: Axis.horizontal,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Flexible(
-                                              flex: 1,
-                                              child: Text("/ ",
-                                                  style: TextStyle(
-                                                      fontSize: fontSize,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white.withOpacity(
-                                                          _fade.toDouble())))),
-                                          Flexible(
-                                            flex: 10,
-                                            child: Text(
-                                              _textoAnimado,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                letterSpacing: 10,
-                                                fontSize: fontSize,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                          if (aux == true)
+                            BackdropFilter(
+                                filter: ImageFilter.blur(
+                                    sigmaX: _blurEffect, sigmaY: _blurEffect),
+                                // Ajusta los valores según prefieras
+                                child: Container(
+                                    height: MediaQuery.of(context).size.height,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        child: Flex(
+                                          clipBehavior: Clip.antiAlias,
+                                          direction: Axis.horizontal,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                                flex: 1,
+                                                child: Text("/ ",
+                                                    style: TextStyle(
+                                                        fontSize: fontSize,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white
+                                                            .withOpacity(_fade
+                                                                .toDouble())))),
+                                            Flexible(
+                                              flex: 10,
+                                              child: Text(
+                                                _textoAnimado,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  letterSpacing: 10,
+                                                  fontSize: fontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Flexible(
-                                              flex: 1,
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                constraints: BoxConstraints(
-                                                  maxWidth: 30,
-                                                  maxHeight: 30,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withOpacity(_color.toDouble()),
-                                                  borderRadius:
-                                                  BorderRadius.circular(100),
-                                                ),
-                                              ))
-                                        ],
-                                      )))),
-                      ]),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 800,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black,
-                        Colors.cyanAccent,
-                      ],
-                    ),
+                                            Flexible(
+                                                flex: 1,
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  constraints: BoxConstraints(
+                                                    maxWidth: 30,
+                                                    maxHeight: 30,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white
+                                                        .withOpacity(
+                                                            _color.toDouble()),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                ))
+                                          ],
+                                        )))),
+                        ]),
                   ),
-                )
-
-              ],
-            )
-
-          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 800,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black,
+                          Colors.cyanAccent,
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )),
         ));
   }
 
@@ -458,12 +454,63 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         Wrap(
           children: [
-            Image.asset('assets/' + proyectos[proyecto - 1],
-                fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
+            Stack(children: [
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height - 100,
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("PROYECTO "+proyecto.toString(),style: TextStyle(color: Colors.cyanAccent,fontSize: 50),),
+                      CupertinoActivityIndicator(
+                        color: Colors.cyanAccent,
+                      ),
+                      Text(
+                        "CARGANDO",
+                        style: TextStyle(
+                            color: Colors.cyanAccent,
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )),
+              Image.asset('assets/' + proyectos[proyecto - 1],
+                  fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
+            ])
+
+            /*Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height-100,
+                      color: Colors.black,
+                        child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("PROYECTO "+proyecto.toString(),style: TextStyle(color: Colors.cyanAccent,fontSize: 50),),
+                                Column(
+                                  children: [
+                                    CupertinoActivityIndicator(color: Colors.cyanAccent,),
+                                    Text("CARGANDO",style: TextStyle(color: Colors.cyanAccent,fontSize: 8,fontWeight: FontWeight.bold),),
+                                  ],
+                                )
+
+
+                              ],
+                            )
+
+                      ),
+
+                  );*/
           ],
         )
       ],
     );
+  }
+
+  Future<void> loadImage(BuildContext context) async {
+    await Future.delayed(Duration(microseconds: 100));
   }
 
   @override
@@ -482,12 +529,11 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.only(top: margin, left: 37),
             child: Image.asset(
               'assets/perfil.png',
-              width: MediaQuery.of(context).size.width/5,
-              height: MediaQuery.of(context).size.height/2,
-                alignment: Alignment.topLeft,
+              width: MediaQuery.of(context).size.width / 5,
+              height: MediaQuery.of(context).size.height / 2,
+              alignment: Alignment.topLeft,
             ),
           ),
-
         ],
       );
     } else {
@@ -495,10 +541,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -555,9 +599,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               IconButton(
                 icon: Icon(Icons.computer, color: Colors.white),
-                onPressed: () {
-
-                  },
+                onPressed: () {},
               ),
               Text(
                 "GITHUB",
