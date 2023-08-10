@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -5,6 +6,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism/glassmorphism.dart';
+import 'classes.dart';
+
+const descripcion =
+    "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo" +
+        "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo";
+
+// Proyectos => siguiente version de la app estos estaran en una base de datos
+Proyecto pr1 = Proyecto("Proyecto 1", descripcion, "12312-23",
+    ["Flutter", "Dart", "Python"], "assets/defult.png", Icons.android);
+Proyecto pr2 = Proyecto("Proyecto 2", descripcion, "22-23-123",
+    ["Flutter", "Dart", "Kotlin"], "assets/defult.png", Icons.apple);
+Proyecto pr3 = Proyecto(
+    "Proyecto 3",
+    descripcion,
+    "2323-23-22",
+    ["Flutter", "Dart", "C++", "Java"],
+    "assets/defult.png",
+    Icons.desktop_windows);
+Proyecto pr4 = Proyecto(
+    "Proyecto 4",
+    descripcion,
+    "2323-23-22",
+    ["Flutter", "Dart", "C++", "Java", "Odoo", "Bash"],
+    "assets/defult.png",
+    Icons.access_alarm);
+
+Porfolio porfolio = Porfolio([pr1, pr2, pr3, pr4]);
 
 void main() {
   runApp(const MyApp());
@@ -132,6 +161,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Stack(
       children: [
+        GlassmorphicContainer(
+            margin: EdgeInsets.only(
+                top: MediaQueryData.fromView(window).size.height - 120,
+                left: 0),
+            width: MediaQueryData.fromView(window).size.width,
+            height: 120,
+            borderRadius: 1,
+            linearGradient: LinearGradient(colors: [
+              Colors.black.withOpacity(0.7),
+              Colors.black.withOpacity(0.1)
+            ]),
+            border: 0,
+            blur: 10,
+    shape: BoxShape.circle,
+            borderGradient:
+                LinearGradient(colors: [Colors.cyanAccent, Colors.black])),
         Container(
             alignment: Alignment.bottomCenter,
             padding: EdgeInsets.only(bottom: 15, left: 30),
@@ -166,6 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.bottomCenter,
                 height: 80,
                 width: 28,
+                color: Colors.transparent,
               ),
               for (var i = 0; i < meses.length; i++)
                 Container(
@@ -333,6 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
     mostrarFondo();
     animate();
     fade();
+
     //desenfoque();
     return Scaffold(
         backgroundColor: Colors.black,
@@ -427,20 +474,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         )))),
                         ]),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 800,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black,
-                          Colors.cyanAccent,
-                        ],
-                      ),
-                    ),
-                  )
+                  const StatsWidget()
                 ],
               )),
         ));
@@ -462,7 +496,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("PROYECTO "+proyecto.toString(),style: TextStyle(color: Colors.cyanAccent,fontSize: 50),),
+                      Text(
+                        "PROYECTO " + proyecto.toString(),
+                        style:
+                            TextStyle(color: Colors.cyanAccent, fontSize: 50),
+                      ),
                       CupertinoActivityIndicator(
                         color: Colors.cyanAccent,
                       ),
@@ -658,5 +696,324 @@ class _FirstScreenState extends State<FirstScreen> {
       },
       itemCount: 20,
     );
+  }
+}
+
+class StatsWidget extends StatefulWidget {
+  const StatsWidget({super.key});
+
+  @override
+  State<StatsWidget> createState() => _StatsWidgetState();
+}
+
+class _StatsWidgetState extends State<StatsWidget> {
+  var screenWidth = MediaQueryData.fromWindow(window).size.width;
+  int tamPorfolio = porfolio.getProyectosLength();
+
+  var tecno = porfolio.getTecnologias().toSet();
+
+  @override
+  Widget Tecnologias() {
+    List list = [];
+    for (var item in tecno) {
+      list.add(item.toString());
+    }
+    return Container(
+      child: Flex(
+        direction: Axis.vertical,
+        children: [
+          Flexible(
+            child: Text(
+              "Tecnologias",
+              style: TextStyle(color: Colors.cyanAccent, fontSize: 50),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: List.generate(list.length, (index) {
+                  return Chip(
+                    label: Text(list[index]),
+                    backgroundColor: Colors.cyanAccent,
+                  );
+                }),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget Tecnologiaas() {
+    List list = [];
+    for (var item in tecno) {
+      list.add(item.toString());
+    }
+    porfolio.getProyectosLength();
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          clipBehavior: Clip.antiAlias,
+          children: [
+            Flexible(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Text(
+                      "TECNOLOGÍAS",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          letterSpacing: 5,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "USADAS EN LOS PROYECTOS",
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      indent: 100,
+                      endIndent: 100,
+                      thickness: 1,
+                    ),
+                  ],
+                )),
+            Flexible(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Colors.blueAccent.withOpacity(1),
+                    Colors.purpleAccent.withOpacity(0.7),
+                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.compass_calibration_sharp,
+                    color: Colors.black,
+                    size: 80,
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 4,
+              child: Container(
+                child: Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: List.generate(list.length, (index) {
+                    return Chip(
+                      label: Text(
+                        list[index],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      avatar: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Text(
+                            (index + 1).toString(),
+                            style: TextStyle(color: Colors.black, fontSize: 10),
+                          )),
+                      backgroundColor: Colors.black,
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ]),
+    );
+  }
+
+  @override
+  Widget Proyectos() {
+    porfolio.getProyectosLength();
+    return Container(
+        margin: EdgeInsets.only(left: 30, right: 30),
+        child: Stack(
+          children: [
+            Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                clipBehavior: Clip.antiAlias,
+                children: [
+                  Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        transform: Matrix4.rotationZ(0.5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.purpleAccent, Colors.cyanAccent],
+                            ))),
+                  ),
+                ]),
+            Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                clipBehavior: Clip.antiAlias,
+                children: [
+                  Text(
+                    "PROYECTOS",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        letterSpacing: 5,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    "MÁS RECIENTES",
+                    style: TextStyle(color: Colors.white, fontSize: 10),
+                    textAlign: TextAlign.center,
+                  ),
+                  Divider(
+                    color: Colors.white,
+                    indent: 100,
+                    endIndent: 100,
+                    thickness: 1,
+                  ),
+                  for (int i = 1; i < 4; i++)
+                    Flexible(
+                        child: GlassmorphicContainer(
+                            width: 600,
+                            height: 150,
+                            borderRadius: 10,
+                            linearGradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(1),
+                                  Colors.white.withOpacity(1),
+                                  Colors.white.withOpacity(1),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                            border: 0,
+                            blur: 6,
+                            borderGradient: LinearGradient(
+                              colors: [
+                                Colors.cyanAccent.withOpacity(0),
+                                Colors.greenAccent.withOpacity(0)
+                              ],
+                            ),
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Container(
+                                padding: EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.transparent,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                              porfolio
+                                                  .getProyecto(tamPorfolio - i)
+                                                  .getIcon(),
+                                              color: Colors.black),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                  "  " +
+                                                      porfolio
+                                                          .getProyecto(
+                                                              tamPorfolio - i)
+                                                          .getNombre()
+                                                          .toString()
+                                                          .toUpperCase(),
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20)),
+                                            ],
+                                          ),
+                                        ]),
+                                    Flexible(
+                                      flex: 10,
+                                      child: Container(
+                                        child: Text(
+                                          porfolio
+                                              .getProyecto(tamPorfolio - i)
+                                              .getDescripcion()
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )))),
+                ]),
+          ],
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int columnas = 3;
+    var widgets = [Proyectos(), Tecnologiaas()];
+
+    var gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: columnas,
+      crossAxisSpacing: 2,
+      mainAxisSpacing: 2,
+    );
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Expanded(
+    child:
+      Column(
+
+
+        children:[
+          Container(
+    height: 350,
+    ),
+        GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 660, // Ancho máximo de cada elemento
+            mainAxisSpacing: 8.0, // Espacio vertical entre elementos
+            crossAxisSpacing: 8.0, // Espacio horizontal entre elementos
+          ),
+          itemCount: widgets.length,
+          // Cantidad de elementos en la cuadrícula
+          itemBuilder: (Widget, index) {
+            return Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.black54,
+              ),
+              alignment: Alignment.center,
+              child:
+
+              widgets[index],
+            );
+          },
+        ),
+    Container(
+    height: 400,
+    ),
+        ]
+
+    ),
+      );
   }
 }
