@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -53,6 +54,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   int _counter = 0;
   int _counter2 = 0;
   double _rotation = 0;
@@ -64,14 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
   final apellido = "ARRIBAS";
   final subapellido = "SORANDO";
 
-  final svgString = '''
+  /*final svgString = '''
       <svg width="673" height="502" viewBox="0 0 673 502" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M558 500L666.266 432.932C669.209 431.109 671 427.894 671 424.431V309" stroke="white" stroke-width="4"/>
 <path d="M115 2L6.73387 69.0675C3.79074 70.8907 2 74.1065 2 77.5686L2 193" stroke="white" stroke-width="4"/>
 <path d="M115 2L6.73387 69.0675C3.79074 70.8907 2 74.1065 2 77.5686L2 193" stroke="white" stroke-width="4"/>
 </svg>
-          ''';
-  /*final svgString = '''
+          ''';*/
+  final svgString = '''
       <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
       <defs>
@@ -82,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
       </linearGradient>
       </defs>
       </svg>
-          ''';*/
+          ''';
   var degradado = [
     Colors.teal.shade100.withOpacity(0.5),
     Colors.purpleAccent.withOpacity(0.1),
@@ -95,6 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
     "PR 2",
     "PR 3",
   ];
+
+
+
+
+
 
   var mesSeleccionado = 0;
   double rounded = 400;
@@ -140,7 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 30,
                   height: 100,
                   decoration: BoxDecoration(
-
                     color: Colors.white.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
@@ -181,15 +187,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           Container(
                             child: Center(
                               child: Container(
-                                height: 50,
-                                width: 3,
-
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  backgroundBlendMode: BlendMode.difference,
-                                )
-                              ),
+                                  height: 50,
+                                  width: 3,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    backgroundBlendMode: BlendMode.difference,
+                                  )),
                             ),
                           ),
                           Container(
@@ -338,83 +342,110 @@ class _MyHomePageState extends State<MyHomePage> {
     //desenfoque();
     return Scaffold(
         backgroundColor: Colors.black,
+        extendBodyBehindAppBar: true,
         body: Center(
           child: GestureDetector(
             onTap: () {},
-            child: Stack(
-                alignment: Alignment.center,
-                fit: StackFit.loose,
-                children: [
-                  if (aux == true)
-                    for (var i = 1; i < 4; i++)
-                      AnimatedContainer(
-                        transform: Matrix4.rotationZ(_rotation * i),
-                        transformAlignment: Alignment.center,
-                        width: _counter.toDouble() / (i * 0.9),
-                        height: _counter2.toDouble() / (i * 0.9),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0),
-                        ),
-                        duration: Duration(milliseconds: 300 * i),
-                        curve: Curves.easeInExpo,
-                        child: SvgPicture.string(svgString),
-                      ),
-                  if (aux == true)
-                    BackdropFilter(
-                        filter: ImageFilter.blur(
-                            sigmaX: _blurEffect, sigmaY: _blurEffect),
-                        // Ajusta los valores según prefieras
-                        child: Container(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-
-                            child: Container(
-                                alignment: Alignment.center,
-                                child: Flex(
-                                  clipBehavior: Clip.antiAlias,
-                                  direction: Axis.horizontal,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                        flex: 1,
-                                        child: Text("/ ",
-                                            style: TextStyle(
+            child:
+            ListView(
+              children: [
+                Container(
+                  alignment: Alignment.topCenter,
+                  color: Colors.black,
+                  height: MediaQuery.of(context).size.height-300,
+                  width: MediaQuery.of(context).size.width,
+                  child:Stack(
+                      alignment: Alignment.center,
+                      fit: StackFit.loose,
+                      children: [
+                        if (aux == true)
+                          for (var i = 1; i < 4; i++)
+                            AnimatedContainer(
+                              transform: Matrix4.rotationZ(_rotation * i),
+                              transformAlignment: Alignment.center,
+                              width: _counter.toDouble() / (i * 0.9),
+                              height: _counter2.toDouble() / (i * 0.9),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0),
+                              ),
+                              duration: Duration(milliseconds: 300 * i),
+                              curve: Curves.easeInExpo,
+                              child: SvgPicture.string(svgString),
+                            ),
+                        if (aux == true)
+                          BackdropFilter(
+                              filter: ImageFilter.blur(
+                                  sigmaX: _blurEffect, sigmaY: _blurEffect),
+                              // Ajusta los valores según prefieras
+                              child: Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      child: Flex(
+                                        clipBehavior: Clip.antiAlias,
+                                        direction: Axis.horizontal,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Flexible(
+                                              flex: 1,
+                                              child: Text("/ ",
+                                                  style: TextStyle(
+                                                      fontSize: fontSize,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white.withOpacity(
+                                                          _fade.toDouble())))),
+                                          Flexible(
+                                            flex: 10,
+                                            child: Text(
+                                              _textoAnimado,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                letterSpacing: 10,
                                                 fontSize: fontSize,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.white.withOpacity(
-                                                    _fade.toDouble())))),
-                                    Flexible(
-                                      flex: 10,
-                                      child: Text(
-                                        _textoAnimado,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          letterSpacing: 10,
-                                          fontSize: fontSize,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    Flexible(
-                                        flex: 1,
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          constraints: BoxConstraints(
-                                            maxWidth: 30,
-                                            maxHeight: 30,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white
-                                                .withOpacity(_color.toDouble()),
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                          ),
-                                        ))
-                                  ],
-                                )))),
-                ]),
+                                          Flexible(
+                                              flex: 1,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                constraints: BoxConstraints(
+                                                  maxWidth: 30,
+                                                  maxHeight: 30,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white
+                                                      .withOpacity(_color.toDouble()),
+                                                  borderRadius:
+                                                  BorderRadius.circular(100),
+                                                ),
+                                              ))
+                                        ],
+                                      )))),
+                      ]),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 800,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black,
+                        Colors.cyanAccent,
+                      ],
+                    ),
+                  ),
+                )
+
+              ],
+            )
+
           ),
         ));
   }
@@ -426,30 +457,48 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListView(
       children: [
         Wrap(
-    children: [
-          Image.asset('assets/'+ proyectos[proyecto-1], fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
-
+          children: [
+            Image.asset('assets/' + proyectos[proyecto - 1],
+                fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
+          ],
+        )
       ],
-    )],
     );
   }
 
   @override
   Widget diapositivas(int pantalla) {
+    var margin = 83.00;
     var degradado = [
       Colors.teal.shade100.withOpacity(0.5),
       Colors.purpleAccent.withOpacity(0.1),
     ];
 
     if (pantalla == 0) {
-      return fondo();
+      return Stack(
+        children: [
+          fondo(),
+          Container(
+            margin: EdgeInsets.only(top: margin, left: 37),
+            child: Image.asset(
+              'assets/perfil.png',
+              width: MediaQuery.of(context).size.width/5,
+              height: MediaQuery.of(context).size.height/2,
+                alignment: Alignment.topLeft,
+            ),
+          ),
+
+        ],
+      );
     } else {
       return proyecto(pantalla);
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -506,7 +555,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               IconButton(
                 icon: Icon(Icons.computer, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+
+                  },
               ),
               Text(
                 "GITHUB",
