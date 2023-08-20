@@ -38,6 +38,9 @@ dependencies:
   flutter_svg: ^0.22.0
   sticky_and_expandable_list: ^1.1.2
   glassmorphism: ^2.0.0
+  flutter_animated_button: 2.0.3
+  zoom_widget: ^2.0.0
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +71,7 @@ flutter:
     - assets/pr1.jpg
     - assets/p2.jpg
     - assets/perfil.png
+    - assets/curriculum.jpg
 
 
     # To add assets to your application, add an assets section, like this:

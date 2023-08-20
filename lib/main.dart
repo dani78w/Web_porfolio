@@ -1,12 +1,12 @@
-import 'dart:collection';
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:provider/provider.dart';
 import 'classes.dart';
 
 const descripcion =
@@ -14,17 +14,14 @@ const descripcion =
         "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo";
 
 // Proyectos => siguiente version de la app estos estaran en una base de datos
-Proyecto pr1 = Proyecto("Proyecto 1", descripcion, "12312-23",
-    ["Flutter", "Dart", "Python"], "assets/defult.png", Icons.android);
-Proyecto pr2 = Proyecto("Proyecto 2", descripcion, "22-23-123",
-    ["Flutter", "Dart", "Kotlin"], "assets/defult.png", Icons.apple);
-Proyecto pr3 = Proyecto(
-    "Proyecto 3",
-    descripcion,
-    "2323-23-22",
-    ["Flutter", "Dart", "C++", "Java"],
-    "assets/defult.png",
-    Icons.desktop_windows);
+Proyecto home = Proyecto("This Web", descripcion, "12312-23", ["Flutter", "Dart"],
+    "assets/defult.png", Icons.home);
+Proyecto pr1 = Proyecto("Jetpack Music App", descripcion, "12312-23",
+    ["Flutter", "Dart", "Python"], "assets/defult.png", Icons.surround_sound);
+Proyecto pr2 = Proyecto("Android Layouts XML", descripcion, "22-23-123",
+    ["Flutter", "Dart", "Kotlin"], "assets/defult.png", Icons.android);
+Proyecto pr3 = Proyecto("Post-it TFG", descripcion, "2323-23-22",
+    ["Flutter", "Dart", "C++", "Java"], "assets/defult.png", Icons.pentagon);
 Proyecto pr4 = Proyecto(
     "Proyecto 4",
     descripcion,
@@ -33,10 +30,19 @@ Proyecto pr4 = Proyecto(
     "assets/defult.png",
     Icons.access_alarm);
 
-Porfolio porfolio = Porfolio([pr1, pr2, pr3, pr4]);
+ScrollController scrollController = ScrollController(
+    keepScrollOffset: false,
+    initialScrollOffset: -MediaQueryData.fromView(window).size.width);
+
+Porfolio porfolio = Porfolio([home,pr1, pr2, pr3, pr4]);
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => GlobalData(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -102,16 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
 </svg>
           ''';*/
   final svgString = '''
-      <svg width="1708" height="1926" viewBox="0 0 1708 1926" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M899 69.7987L1605.04 477.428C1632.88 493.505 1650.04 523.217 1650.04 555.37V1370.63C1650.04 1402.78 1632.88 1432.49 1605.04 1448.57L899 1856.2C871.154 1872.28 836.846 1872.28 809 1856.2L102.965 1448.57C75.1189 1432.49 57.965 1402.78 57.965 1370.63V555.37C57.965 523.217 75.1189 493.505 102.965 477.428L809 69.7987C836.846 53.7217 871.154 53.7217 899 69.7987Z" stroke="url(#paint0_linear_411_25)" stroke-width="114"/>
-      <defs>
-      <linearGradient  x1="854" y1="861" x2="504" y2="1552" gradientUnits="userSpaceOnUse">
-      <stop/>
-      <stop offset="0.234375" stop-opacity="0.973958"/>
-      <stop offset="1" stop-opacity="0"/>
-      </linearGradient>
-      </defs>
-      </svg>
+      <svg width="524" height="596" viewBox="0 0 524 596" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M277.75 5.67062L507.29 138.195C517.036 143.822 523.04 154.221 523.04 165.475V430.525C523.04 441.779 517.036 452.178 507.29 457.805L277.75 590.329C268.004 595.956 255.996 595.956 246.25 590.329L16.7103 457.805C6.96421 452.178 0.960327 441.779 0.960327 430.525V165.475C0.960327 154.221 6.9642 143.822 16.7103 138.195L246.25 5.67062C255.996 0.0436921 268.004 0.0436845 277.75 5.67062Z" stroke="white"/>
+</svg>
+
           ''';
   var degradado = [
     Colors.teal.shade100.withOpacity(0.5),
@@ -129,11 +129,334 @@ class _MyHomePageState extends State<MyHomePage> {
   var mesSeleccionado = 0;
   double rounded = 400;
 
+  void _showPopupGithub(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 30,
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          content: Container(
+            height: 300,
+            width: 90,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(1),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.blueGrey.withOpacity(1),
+                width: 1,
+              ),
+            ),
+            child: Center(
+                child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Flexible(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 40,
+                        ),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          child: Icon(Icons.android,
+                              color: Colors.white, size: 50),
+                        ),
+                        Container(
+                          height: 10,
+                        ),
+                        Text(
+                          "Git-Hub",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        ),
+                      ],
+                    )),
+                Flexible(
+                    flex: 2,
+                    child: Container(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        color: Colors.blueGrey.withOpacity(1),
+                        child: Container(
+                            alignment: Alignment.center,
+                            color: Colors.blueGrey.withOpacity(1),
+                            child: Column(
+                              children: [
+                                Flex(
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        child: Icon(Icons.person,
+                                            color: Colors.white, size: 25),
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          "Dani78w",
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        flex: 1,
+                                      ),
+                                    ]),
+                                Flex(
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Flexible(
+                                        child: Icon(Icons.visibility,
+                                            color: Colors.black, size: 20),
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          "250",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                        flex: 1,
+                                      ),
+                                      Spacer(
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        child: Icon(Icons.arrow_upward,
+                                            color: Colors.black, size: 20),
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          "250",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                        flex: 1,
+                                      ),
+                                    ]),
+                                Container(
+                                  height: 10,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: 38,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.black12,
+                                    border: Border.all(
+                                      color: Colors.blueGrey.withOpacity(1),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: IconButton(
+                                    icon: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Visitar",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                        Icon(Icons.arrow_forward_ios,
+                                            color: Colors.black, size: 15),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context); // Cierra el popup
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ))))
+              ],
+            )),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cierra el popup
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Colors.black,
+                  border: Border.all(
+                    color: Colors.white.withOpacity(1),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(Icons.close, color: Colors.white, size: 30),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPopupEmail(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 30,
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          content: Container(
+            height: 294,
+            width: 290,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(1),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.blueGrey.withOpacity(1),
+                width: 1,
+              ),
+            ),
+            child: Center(
+                child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Flexible(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 40,
+                        ),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          child: Icon(Icons.android,
+                              color: Colors.white, size: 50),
+                        ),
+                        Container(
+                          height: 10,
+                        ),
+                        Text(
+                          "Contact",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        ),
+                      ],
+                    )),
+                Flexible(
+                    flex: 2,
+                    child: Container(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        color: Colors.blueGrey.withOpacity(1),
+                        child: Container(
+                            alignment: Alignment.center,
+                            color: Colors.blueGrey.withOpacity(1),
+                            child: Column(
+                              children: [
+                                Flex(
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        child: Icon(Icons.email,
+                                            color: Colors.white, size: 25),
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          "danielarribas78w@gmail.com",
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15),
+                                        ),
+                                        flex: 3,
+                                      ),
+                                    ]),
+                                Container(
+                                  height: 10,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: 38,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.black12,
+                                    border: Border.all(
+                                      color: Colors.blueGrey.withOpacity(1),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: IconButton(
+                                    icon: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Visitar",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                        Icon(Icons.arrow_forward_ios,
+                                            color: Colors.black, size: 15),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context); // Cierra el popup
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ))))
+              ],
+            )),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cierra el popup
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Colors.black,
+                  border: Border.all(
+                    color: Colors.white.withOpacity(1),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(Icons.close, color: Colors.white, size: 30),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
-  Widget timeline() {
-    ScrollController scrollController = ScrollController(
-        keepScrollOffset: false,
-        initialScrollOffset: -MediaQueryData.fromView(window).size.width);
+  Widget timeline(ScrollController scrollController) {
     var rangos = [];
 
     for (var i = 0; i < meses.length; i++) {
@@ -169,30 +492,48 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 120,
             borderRadius: 1,
             linearGradient: LinearGradient(colors: [
-              Colors.black.withOpacity(0.7),
-              Colors.black.withOpacity(0.1)
+              Colors.black.withOpacity(0.8),
+              Colors.black.withOpacity(0.8)
             ]),
             border: 0,
             blur: 10,
-    shape: BoxShape.circle,
+            shape: BoxShape.circle,
             borderGradient:
                 LinearGradient(colors: [Colors.cyanAccent, Colors.black])),
         Container(
+            width: MediaQueryData.fromView(window).size.width,
+            height: MediaQueryData.fromView(window).size.height,
             alignment: Alignment.bottomCenter,
-            padding: EdgeInsets.only(bottom: 15, left: 30),
+            padding: EdgeInsets.only(bottom: 43, left: 25, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQueryData.fromView(window).size.width - 135,
+                  height: 1,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(1),
+                    borderRadius: BorderRadius.circular(10),
+                    backgroundBlendMode: BlendMode.difference,
+                  ),
+                ),
+              ],
+            )),
+        Container(
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.only(bottom: 15, left: 20),
             child: Row(
               children: [
                 Container(
-                  width: 30,
+                  width: 50,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.black.withOpacity(1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withOpacity(1),
                       width: 1,
                     ),
-                    backgroundBlendMode: BlendMode.difference,
                   ),
                 )
               ],
@@ -221,7 +562,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Row(children: [
                     Container(
                       height: 100,
-                      width: 35,
+                      width: 34,
                       child: Column(
                         children: [
                           Container(
@@ -247,18 +588,48 @@ class _MyHomePageState extends State<MyHomePage> {
                             textAlign: TextAlign.end,
                           ),
                           Container(
-                            height: 10,
+                            height: 3,
+                            width: 3,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.cyan,
+                            ),
+                          ),
+                          Container(
+                            height: 7,
                             width: 3,
                             color: Colors.transparent,
                           ),
                         ],
                       ),
-                    ),
+                    ), //palitos
                     Container(
-                      height: 50,
-                      width: 50,
-                      color: Colors.transparent,
-                    ),
+                        height: 150,
+                        width: 51,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (var j = 0; j < 3; j++)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: 17,
+                                        height: 20,
+                                        margin: EdgeInsets.only(bottom: 50),
+                                        child: Center(
+                                          child: Container(
+                                            width: 1,
+                                            height: 20,
+                                            color: Colors.white,
+                                          ),
+                                        )),
+                                  ],
+                                )
+                            ],
+                          ),
+                        )),
                   ]),
                 ),
               Container(
@@ -269,7 +640,107 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-        )
+        ),
+        Container(
+            width: MediaQueryData.fromView(window).size.width,
+            height: MediaQueryData.fromView(window).size.height,
+            alignment: Alignment.bottomRight,
+            padding: EdgeInsets.only(bottom: 19, left: 15, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                    width: 100,
+                    height: 68,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 15,
+                          width: 71,
+                          decoration: BoxDecoration(
+                            color: Colors.cyan,
+                            borderRadius: BorderRadius.circular(1),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "PROYECTOS",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 5,
+                        ),
+                        Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black,
+                            border: Border.all(
+                              color: Colors.white.withOpacity(1),
+                              width: 1,
+                            ),
+                          ),
+                          child: Center(
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Spacer(
+                                  flex: 1,
+                                ),
+                                Flexible(
+                                  flex: 10,
+                                  child: IconButton(
+                                      icon: Icon(Icons.arrow_back_ios,
+                                          color: Colors.white, size: 20),
+                                      onPressed: () {
+                                        scrollController.animateTo(
+                                            scrollController.position.pixels -
+                                                85,
+                                            duration:
+                                                Duration(milliseconds: 100),
+                                            curve: Curves.easeIn);
+                                      }),
+                                ),
+                                Spacer(
+                                  flex: 1,
+                                ),
+                                Flexible(
+                                  child: IconButton(
+                                    icon: Icon(Icons.arrow_forward_ios,
+                                        color: Colors.white, size: 20),
+                                    onPressed: () {
+                                      scrollController.animateTo(
+                                          scrollController.position.pixels + 85,
+                                          duration: Duration(milliseconds: 100),
+                                          curve: Curves.easeIn);
+                                    },
+                                  ),
+                                  flex: 10,
+                                ),
+                                Spacer(
+                                  flex: 1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+              ],
+            )),
       ],
     );
   }
@@ -513,8 +984,26 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   )),
-              Image.asset('assets/' + proyectos[proyecto - 1],
-                  fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
+              Column(
+                children: [
+                  Center(
+                    child: InteractiveViewer(
+                      panEnabled: true,
+                      // Set it to false to prevent panning.
+                      boundaryMargin: EdgeInsets.all(80),
+                      minScale: 0.5,
+                      maxScale: 4,
+                      child: Image.asset('assets/' + proyectos[proyecto - 1],
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width),
+                    ),
+                  ),
+                  Container(
+                    height: 120,
+                    width: 100,
+                  )
+                ],
+              )
             ])
 
             /*Center(
@@ -568,7 +1057,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Image.asset(
               'assets/perfil.png',
               width: MediaQuery.of(context).size.width / 5,
-              height: MediaQuery.of(context).size.height / 2,
+              height: MediaQuery.of(context).size.height / 6,
               alignment: Alignment.topLeft,
             ),
           ),
@@ -585,6 +1074,7 @@ class _MyHomePageState extends State<MyHomePage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         toolbarHeight: 100,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -605,7 +1095,14 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               IconButton(
                 icon: Icon(Icons.file_copy, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  //navegar a la pagina de cv
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BannerScreen()),
+                  );
+                },
               ),
               Text(
                 "MY CV",
@@ -621,7 +1118,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               IconButton(
                 icon: Icon(Icons.email, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  _showPopupEmail(context);
+                },
               ),
               Text(
                 "CONTACT",
@@ -637,7 +1136,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               IconButton(
                 icon: Icon(Icons.computer, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  _showPopupGithub(context);
+                },
               ),
               Text(
                 "GITHUB",
@@ -657,7 +1158,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         diapositivas(mesSeleccionado),
-        timeline()
+        timeline(scrollController),
       ]),
     );
   }
@@ -747,94 +1248,6 @@ class _StatsWidgetState extends State<StatsWidget> {
     );
   }
 
-  Widget Tecnologiaas() {
-    List list = [];
-    for (var item in tecno) {
-      list.add(item.toString());
-    }
-    porfolio.getProyectosLength();
-    return Container(
-      margin: EdgeInsets.only(left: 10, right: 10),
-      child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          clipBehavior: Clip.antiAlias,
-          children: [
-            Flexible(
-                flex: 2,
-                child: Column(
-                  children: [
-                    Text(
-                      "TECNOLOGÍAS",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          letterSpacing: 5,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "USADAS EN LOS PROYECTOS",
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                    Divider(
-                      color: Colors.white,
-                      indent: 100,
-                      endIndent: 100,
-                      thickness: 1,
-                    ),
-                  ],
-                )),
-            Flexible(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Colors.blueAccent.withOpacity(1),
-                    Colors.purpleAccent.withOpacity(0.7),
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.compass_calibration_sharp,
-                    color: Colors.black,
-                    size: 80,
-                  ),
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 4,
-              child: Container(
-                child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: List.generate(list.length, (index) {
-                    return Chip(
-                      label: Text(
-                        list[index],
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      avatar: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Text(
-                            (index + 1).toString(),
-                            style: TextStyle(color: Colors.black, fontSize: 10),
-                          )),
-                      backgroundColor: Colors.black,
-                    );
-                  }),
-                ),
-              ),
-            ),
-          ]),
-    );
-  }
-
   @override
   Widget Proyectos() {
     porfolio.getProyectosLength();
@@ -888,76 +1301,89 @@ class _StatsWidgetState extends State<StatsWidget> {
                   ),
                   for (int i = 1; i < 4; i++)
                     Flexible(
-                        child: GlassmorphicContainer(
-                            width: 600,
-                            height: 150,
-                            borderRadius: 10,
-                            linearGradient: LinearGradient(
-                                colors: [
-                                  Colors.white.withOpacity(1),
-                                  Colors.white.withOpacity(1),
-                                  Colors.white.withOpacity(1),
+                      child: GestureDetector(
+                          onTap: () {
+                            // Manejar la acción de clic aquí
+                            scrollController.animateTo(
+                                scrollController.position.pixels +
+                                    85 * (tamPorfolio - i),
+                                duration: Duration(milliseconds: 100),
+                                curve: Curves.easeIn);
+                          },
+                          child: Container(
+                              width: 600,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    spreadRadius: 10,
+                                    blurRadius: 20,
+                                    offset: Offset(
+                                        0, 5), // changes position of shadow
+                                  ),
                                 ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
-                            border: 0,
-                            blur: 6,
-                            borderGradient: LinearGradient(
-                              colors: [
-                                Colors.cyanAccent.withOpacity(0),
-                                Colors.greenAccent.withOpacity(0)
-                              ],
-                            ),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: Container(
-                                padding: EdgeInsets.all(7),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.black,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.2),
+                                  width: 1,
                                 ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                              porfolio
-                                                  .getProyecto(tamPorfolio - i)
-                                                  .getIcon(),
-                                              color: Colors.black),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                  "  " +
-                                                      porfolio
-                                                          .getProyecto(
-                                                              tamPorfolio - i)
-                                                          .getNombre()
-                                                          .toString()
-                                                          .toUpperCase(),
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20)),
-                                            ],
+                              ),
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                  padding: EdgeInsets.all(7),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.black,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                                porfolio
+                                                    .getProyecto(
+                                                        tamPorfolio - i - 1)
+                                                    .getIcon(),
+                                                color: Colors.white),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    "  " +
+                                                        porfolio
+                                                            .getProyecto(
+                                                                tamPorfolio -
+                                                                    i -
+                                                                    1)
+                                                            .getNombre()
+                                                            .toString()
+                                                            .toUpperCase(),
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20)),
+                                              ],
+                                            ),
+                                          ]),
+                                      Flexible(
+                                        flex: 10,
+                                        child: Container(
+                                          child: Text(
+                                            porfolio
+                                                .getProyecto(tamPorfolio - i)
+                                                .getDescripcion()
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10),
                                           ),
-                                        ]),
-                                    Flexible(
-                                      flex: 10,
-                                      child: Container(
-                                        child: Text(
-                                          porfolio
-                                              .getProyecto(tamPorfolio - i)
-                                              .getDescripcion()
-                                              .toString(),
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 10),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                )))),
+                                      )
+                                    ],
+                                  )))),
+                    ),
                 ]),
           ],
         ));
@@ -966,7 +1392,7 @@ class _StatsWidgetState extends State<StatsWidget> {
   @override
   Widget build(BuildContext context) {
     int columnas = 3;
-    var widgets = [Proyectos(), Tecnologiaas()];
+    var widgets = [Proyectos(), TechnoWidget(), SearchWidget()];
 
     var gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: columnas,
@@ -975,45 +1401,580 @@ class _StatsWidgetState extends State<StatsWidget> {
     );
 
     final screenWidth = MediaQuery.of(context).size.width;
-    return Expanded(
-    child:
-      Column(
+    return Column(children: [
+      Container(
+        height: 350,
+      ),
+      GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 660, // Ancho máximo de cada elemento
+          mainAxisSpacing: 8.0, // Espacio vertical entre elementos
+          crossAxisSpacing: 8.0, // Espacio horizontal entre elementos
+        ),
+        itemCount: widgets.length,
+        // Cantidad de elementos en la cuadrícula
+        itemBuilder: (Widget, index) {
+          return Container(
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.black54,
+            ),
+            alignment: Alignment.center,
+            child: widgets[index],
+          );
+        },
+      ),
+      Container(
+        height: 400,
+      ),
+    ]);
+  }
+}
 
+class BannerScreen extends StatefulWidget {
+  const BannerScreen({super.key});
 
-        children:[
-          Container(
-    height: 350,
-    ),
-        GridView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 660, // Ancho máximo de cada elemento
-            mainAxisSpacing: 8.0, // Espacio vertical entre elementos
-            crossAxisSpacing: 8.0, // Espacio horizontal entre elementos
-          ),
-          itemCount: widgets.length,
-          // Cantidad de elementos en la cuadrícula
-          itemBuilder: (Widget, index) {
-            return Container(
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.black54,
-              ),
-              alignment: Alignment.center,
-              child:
+  @override
+  State<BannerScreen> createState() => _BannerScreenState();
+}
 
-              widgets[index],
-            );
+class _BannerScreenState extends State<BannerScreen> {
+  var _padding = 0;
+  var _color = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.exit_to_app, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
           },
         ),
-    Container(
-    height: 400,
-    ),
-        ]
+        title: Text("CURRICULUM VITAE", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
+      ),
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: Colors.black,
+          ),
+          child: ListView(
+            children: [
+              InteractiveViewer(
+                  panEnabled: true,
+                  // Set it to false to prevent panning.
+                  maxScale: 5,
+                  child: Image.asset(
+                    'assets/curriculum.jpg',
+                    fit: BoxFit.contain,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                  )),
+            ],
+          )),
+    );
+  }
+}
 
-    ),
-      );
+//BUSQUEDA DE PROYECTOS
+
+class GlobalData extends ChangeNotifier {
+  int _value = 0;
+
+  int get value => _value;
+
+  set value(int newValue) {
+    _value = newValue;
+    notifyListeners();
+  }
+}
+
+var tecnoSelected = [].toSet();
+
+class TechnoWidget extends StatefulWidget {
+  const TechnoWidget({super.key});
+
+  @override
+  State<TechnoWidget> createState() => _TechnoWidgetState();
+}
+
+class _TechnoWidgetState extends State<TechnoWidget> {
+  var tecno = porfolio.getTecnologias().toSet();
+  List<String> selectedOptions = [];
+
+  void toggleOption(String option) {
+    setState(() {
+      if (selectedOptions.contains(option)) {
+        selectedOptions.remove(option);
+      } else {
+        selectedOptions.add(option);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List list = [];
+    for (var item in tecno) {
+      list.add(item.toString());
+      tecnoSelected.add(false);
+    }
+    porfolio.getProyectosLength();
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          clipBehavior: Clip.antiAlias,
+          children: [
+            const Flexible(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Text(
+                      "TECNOLOGÍAS",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          letterSpacing: 5,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "USADAS EN LOS PROYECTOS",
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      indent: 100,
+                      endIndent: 100,
+                      thickness: 1,
+                    ),
+                  ],
+                )),
+            Flexible(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Colors.blueAccent.withOpacity(1),
+                    Colors.purpleAccent.withOpacity(0.7),
+                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.compass_calibration_sharp,
+                    color: Colors.black,
+                    size: 80,
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 4,
+              child: Container(
+                child: Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: List.generate(list.length, (index) {
+                    return FilterChip(
+                      selected: tecnoSelected.contains(list[index]),
+                      checkmarkColor: Colors.black,
+                      selectedShadowColor: Colors.cyanAccent,
+                      pressElevation: 3,
+                      selectedColor: Colors.blueAccent.withOpacity(0.9),
+                      label: Text(
+                        list[index],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      avatarBorder: CircleBorder(),
+                      avatar: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Text(
+                            (index + 1).toString(),
+                            style: TextStyle(color: Colors.black, fontSize: 10),
+                          )),
+                      backgroundColor: Colors.black,
+                      onSelected: (bool value) {
+                        setState(() {
+                          if (tecnoSelected.contains(list[index]) == false) {
+                            tecnoSelected.add(list[index]);
+                            Provider.of<GlobalData>(context, listen: false)
+                                .value++;
+                          } else {
+                            tecnoSelected.remove(list[index]);
+                            Provider.of<GlobalData>(context, listen: false)
+                                .value--;
+                          }
+                          print("he puslado " +
+                              list[index] +
+                              "  |  " +
+                              value.toString() +
+                              "  |  " +
+                              tecnoSelected.toString() +
+                              "  |");
+                        });
+                      },
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ]),
+    );
+  }
+}
+
+class SearchWidget extends StatefulWidget {
+  const SearchWidget({super.key});
+
+  @override
+  State<SearchWidget> createState() => _SearchWidgetState();
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
+  void _showPopupResoults(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 30,
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          content: Container(
+            height: 500,
+            width: 300,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(1),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.white.withOpacity(1),
+                width: 1,
+              ),
+            ),
+            child: Center(
+                child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Flexible(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 40,
+                        ),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          child:
+                              Icon(Icons.search, color: Colors.white, size: 50),
+                        ),
+                        Container(
+                          height: 10,
+                        ),
+                        Text(
+                          "Resultados",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        ),
+                      ],
+                    )),
+                Flexible(
+                    flex: 4,
+                    child: Container(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        color: Colors.white.withOpacity(1),
+                        child: Container(
+                          alignment: Alignment.center,
+                          color: Colors.white.withOpacity(1),
+                          child: ListView(
+                            children: [resultados()],
+                          ),
+                        )))
+              ],
+            )),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cierra el popup
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Colors.black,
+                  border: Border.all(
+                    color: Colors.white.withOpacity(1),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(Icons.close, color: Colors.white, size: 30),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var cambios = Provider.of<GlobalData>(context, listen: true).value;
+    var searchState = 25;
+    var isExpanded = false;
+    if (cambios != 0) {
+      setState(() {
+        searchState = 8;
+        isExpanded = true;
+      });
+    } else {
+      setState(() {
+        searchState = 25;
+        isExpanded = false;
+      });
+    }
+    ;
+
+    return Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: Colors.black,
+        ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: Container(),
+                  ),
+                  for (var i = 1; i < cambios + 1; i++)
+                    /* if(tecnoSelected.elementAt(i)==true)*/
+                    Flexible(
+                        flex: 1,
+                        child: Container(
+                            margin: EdgeInsets.only(left: 55, right: 55),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.blueAccent
+                                      .withOpacity(10 * i / (cambios * 10)),
+                                  Colors.purpleAccent.withOpacity(0.9),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text(
+                                tecnoSelected.elementAt(i).toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )))
+                ],
+              ),
+            ),
+            Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                    flex: searchState,
+                    child: AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      width: isExpanded ? 420 : 420,
+                      // Cambia la anchura con animación
+                      height: isExpanded ? 500 : 500,
+                      color: Colors.transparent,
+
+                      child: Center(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            margin: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.only(top: isExpanded ? 400 : 0),
+                            width: 100,
+                            // Cambia la anchura con animación
+                            height: isExpanded ? 0 : 100,
+                            child: Container(
+                              padding:
+                                  EdgeInsets.only(left: isExpanded ? 800 : 0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.black,
+                                  size: 50,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "BUSCAR PROYECTOS",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                letterSpacing: 5,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "SELECCIONA UNA TECNOLOGÍA",
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.4),
+                                fontSize: 10),
+                          ),
+                          Divider(
+                            color: Colors.white.withOpacity(0.4),
+                            indent: 100,
+                            endIndent: 100,
+                            thickness: 1,
+                          ),
+                        ],
+                      )),
+                    )),
+                Flexible(
+                  flex: 10,
+                  child: Container(),
+                )
+              ],
+            ),
+            if (isExpanded == true)
+              Container(
+                alignment: Alignment.bottomRight,
+                child: GestureDetector(
+                    onTap: () {
+                      _showPopupResoults(context);
+                    },
+                    child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        margin: EdgeInsets.only(right: 30, bottom: 30),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.black,
+                        ))),
+              )
+          ],
+        ));
+  }
+}
+
+class resultados extends StatefulWidget {
+  const resultados({super.key});
+
+  @override
+  State<resultados> createState() => _resultadosState();
+}
+
+class _resultadosState extends State<resultados> {
+  Widget buscar() {
+    var cambios = Provider.of<GlobalData>(context, listen: true).value;
+    List<Proyecto> proyectos = porfolio.proyectos.toList();
+    var tecnoSelectedNames = [].toSet();
+
+    for (var i = 1; i < cambios + 1; i++) {
+      tecnoSelectedNames.add(tecnoSelected.elementAt(i).toString());
+      tecnoSelected.add(tecnoSelected.elementAt(i));
+      print("ayquerico" + tecnoSelectedNames.toString());
+    }
+
+    List<Proyecto> resultadosBusqueda = [];
+    resultadosBusqueda = resultadosBusqueda.toSet().toList();
+
+    for (var proyecto in proyectos) {
+      var j = 0;
+      for (var tecnologia in tecnoSelectedNames) {
+        print("tecnologia" + tecnologia.toString());
+        print(proyecto.getTecnologias().toString());
+        if (proyecto.getTecnologias().contains(tecnologia.toString()) == true) {
+          j++;
+        }
+      }
+
+      if (j == tecnoSelectedNames.length) {
+        resultadosBusqueda.add(proyecto);
+      }
+    }
+    print("Busqueda Finalizada");
+    print(resultadosBusqueda.toString());
+    resultadosBusqueda = resultadosBusqueda.toSet().toList();
+
+    return Column(
+      children: [
+        if (resultadosBusqueda.length == 0)
+          Text("No se han encontrado resultados"),
+        if (resultadosBusqueda.length != 0)
+          for (var proyecto in resultadosBusqueda)
+            GestureDetector(
+                onTap: () {
+                  print("he pulsado " + proyecto.getNombre());
+                  var posicion = porfolio.proyectos.indexOf(proyecto);
+                  scrollController.animateTo(
+                      posicion* 85,
+                      duration:
+                      Duration(milliseconds: 100),
+                      curve: Curves.easeIn);
+                },
+                child: Container(
+                    height: 70,
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(flex: 2, child: Icon(proyecto.getIcon())),
+                        Flexible(flex: 3, child: Text(proyecto.getNombre())),
+                        Flexible(
+                          flex: 1,
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                        ),
+                      ],
+                    )))
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return buscar();
   }
 }
