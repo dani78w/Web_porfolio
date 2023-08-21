@@ -41,6 +41,9 @@ dependencies:
   flutter_animated_button: 2.0.3
   zoom_widget: ^2.0.0
   provider: ^5.0.0
+  isolate: ^2.0.3
+  model_viewer_plus: ^1.5.0
+
 
 dev_dependencies:
   flutter_test:
@@ -65,13 +68,16 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/yb.jpg
-    - assets/postit.jpg
-    - assets/frame.png
-    - assets/pr1.jpg
-    - assets/p2.jpg
+    - assets/proyects/yb.jpg
+    - assets/proyects/postit.jpg
+    - assets/proyects/p2.jpg
+
     - assets/perfil.png
     - assets/curriculum.jpg
+    - assets/home.png
+
+    - assets/3d/key_card.glb
+    - assets/3d/dolphin.glb
 
 
     # To add assets to your application, add an assets section, like this:
