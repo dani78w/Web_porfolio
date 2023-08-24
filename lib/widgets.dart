@@ -10,6 +10,8 @@ import 'classes.dart';
 import 'globalData.dart';
 import 'package:flutter/services.dart';
 
+import 'main.dart';
+
 
 class SobreMi extends StatefulWidget {
   const SobreMi({super.key});
@@ -44,17 +46,22 @@ class StatsWidget extends StatefulWidget {
 }
 
 class _StatsWidgetState extends State<StatsWidget> {
+
   var screenWidth = MediaQueryData.fromWindow(window).size.width;
   int tamPorfolio = porfolio.getProyectosLength();
-
   var tecno = porfolio.getTecnologias().toSet();
-
 
   Widget tecnologias() {
     List list = [];
+
+    if(tecno.isEmpty){
+      tecno.add("Cargando...");
+    }
+
     for (var item in tecno) {
       list.add(item.toString());
     }
+
     return Flex(
       direction: Axis.vertical,
       children: [
@@ -79,8 +86,6 @@ class _StatsWidgetState extends State<StatsWidget> {
       ],
     );
   }
-
-
   Widget proyectos() {
     porfolio.getProyectosLength();
     return Container(
@@ -141,8 +146,8 @@ class _StatsWidgetState extends State<StatsWidget> {
                               // Manejar la acción de clic aquí
                               scrollController.animateTo(
                                   scrollController.position.pixels +
-                                      85 * (i),
-                                  duration: const Duration(milliseconds: 100),
+                                      85 * (porfolio.tags.length - i),
+                                  duration: const Duration(milliseconds: 900),
                                   curve: Curves.easeIn);
                             },
                             child: Container(
@@ -187,8 +192,9 @@ class _StatsWidgetState extends State<StatsWidget> {
                                               Row(
                                                 children: [
                                                   Text(
-                                                      "  ${porfolio
-                                                          .getProyecto(i)
+                                                      "  ${
+                                                          porfolio
+                                                          .getProyecto(porfolio.tags.length - i)
                                                           .getNombre()
                                                           .toString()
                                                           .toUpperCase()}",
@@ -232,6 +238,7 @@ class _StatsWidgetState extends State<StatsWidget> {
       )
     );
   }
+
   @override
   Widget build(BuildContext context) {
     var widgets = [
@@ -239,6 +246,8 @@ class _StatsWidgetState extends State<StatsWidget> {
       const TechnoWidget(),
       const SearchWidget(),
       if (MediaQuery.of(context).size.width > 1336) Container(),
+      Container(),
+      Container(),
       proyectList(),
       //const LastPost(),
       //const TreeWidget(),
@@ -367,7 +376,8 @@ class _TechnoWidgetState extends State<TechnoWidget> {
       tecnoSelected.add(false);
     }
     porfolio.getProyectosLength();
-    return Container(
+    return
+      Container(
       margin: const EdgeInsets.only(left: 10, right: 10),
       child: Flex(
           direction: Axis.vertical,
@@ -411,14 +421,18 @@ class _TechnoWidgetState extends State<TechnoWidget> {
                   ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.compass_calibration_sharp,
-                    color: Colors.black,
-                    size: 80,
-                  ),
-                ),
+                child:
+
+                    Container(
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.compass_calibration_sharp,
+                        color: Colors.black,
+                        size: 80,
+                      ),
+                    ),
+
+
               ),
             ),
             Flexible(

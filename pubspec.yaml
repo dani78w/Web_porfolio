@@ -73,6 +73,7 @@ flutter:
     - assets/proyects/postit.jpg
     - assets/proyects/p2.jpg
     - assets/perfil.png
+    - - assets/capa.png
     - assets/curriculum.jpg
     - assets/home.png
     - assets/3d/key_card.glb
@@ -81,6 +82,7 @@ flutter:
     - assets/
     - assets/3d/
     - assets/proyects/
+    - lib/generated/assets.dart
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

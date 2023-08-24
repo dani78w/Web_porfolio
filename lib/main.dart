@@ -18,14 +18,13 @@ SyncApiPorfolio sc = SyncApiPorfolio();
 
 void main() {
 
-
-  sc.syncPorfolio();
-  runApp(
+  sc.syncPorfolio().then((value) => runApp(
     ChangeNotifierProvider(
       create: (context) => GlobalData(),
       child: MyApp(),
     ),
-  );
+  ));
+
 
 }
 
@@ -60,6 +59,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:MyHomePage(title: 'Flutter Demo Home Page'),
+
+
     );
   }
 }
@@ -906,6 +907,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         diapositivas(tagSeleccionado),
         timeline(scrollController),
+
       ]),
     );
   }
@@ -929,7 +931,7 @@ class LoadingScreen extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return Container(
+          return  Container(
         color: Colors.black,
         alignment: Alignment.center,
           transformAlignment: Alignment.center,
