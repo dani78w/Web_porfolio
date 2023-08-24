@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 
 import 'main.dart';
 
-
 class SobreMi extends StatefulWidget {
   const SobreMi({super.key});
 
@@ -21,20 +20,13 @@ class SobreMi extends StatefulWidget {
 }
 
 class _SobreMi extends State<SobreMi> {
-
-
-
   @override
   Widget build(BuildContext context) {
-    return
-    const Column(
+    return const Column(
       children: [
-      Text("Sobre Mi"),
-
-
-    ],
+        Text("Sobre Mi"),
+      ],
     );
-
   }
 }
 
@@ -46,7 +38,6 @@ class StatsWidget extends StatefulWidget {
 }
 
 class _StatsWidgetState extends State<StatsWidget> {
-
   var screenWidth = MediaQueryData.fromWindow(window).size.width;
   int tamPorfolio = porfolio.getProyectosLength();
   var tecno = porfolio.getTecnologias().toSet();
@@ -54,7 +45,7 @@ class _StatsWidgetState extends State<StatsWidget> {
   Widget tecnologias() {
     List list = [];
 
-    if(tecno.isEmpty){
+    if (tecno.isEmpty) {
       tecno.add("Cargando...");
     }
 
@@ -86,6 +77,7 @@ class _StatsWidgetState extends State<StatsWidget> {
       ],
     );
   }
+
   Widget proyectos() {
     porfolio.getProyectosLength();
     return Container(
@@ -108,7 +100,10 @@ class _StatsWidgetState extends State<StatsWidget> {
                               gradient: const LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
-                                colors: [Colors.purpleAccent, Colors.cyanAccent],
+                                colors: [
+                                  Colors.purpleAccent,
+                                  Colors.cyanAccent
+                                ],
                               ))),
                     ),
                   ]),
@@ -181,23 +176,17 @@ class _StatsWidgetState extends State<StatsWidget> {
                                       children: [
                                         Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             children: [
                                               Icon(
                                                   porfolio
-                                                      .getProyecto(
-                                                       1)
+                                                      .getProyecto(1)
                                                       .getIcon(),
                                                   color: Colors.white),
                                               Row(
                                                 children: [
                                                   Text(
-                                                      "  ${
-                                                          porfolio
-                                                          .getProyecto(porfolio.tags.length - i)
-                                                          .getNombre()
-                                                          .toString()
-                                                          .toUpperCase()}",
+                                                      "  ${porfolio.getProyecto(porfolio.tags.length - i).getNombre().toString().toUpperCase()}",
                                                       style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20)),
@@ -221,22 +210,19 @@ class _StatsWidgetState extends State<StatsWidget> {
                       ),
                   ]),
             )
-
           ],
         ));
   }
+
   Widget proyectList() {
     return Container(
-      color: Colors.cyan,
-      child:
-      Column(
-        children: [
-          for(var i = 0 ; i < porfolio.getProyectosLength(); i++)
-            Text(porfolio.getProyecto(i).getNombre())
-        ],
-
-      )
-    );
+        color: Colors.cyan,
+        child: Column(
+          children: [
+            for (var i = 0; i < porfolio.getProyectosLength(); i++)
+              Text(porfolio.getProyecto(i).getNombre())
+          ],
+        ));
   }
 
   @override
@@ -246,14 +232,11 @@ class _StatsWidgetState extends State<StatsWidget> {
       const TechnoWidget(),
       const SearchWidget(),
       if (MediaQuery.of(context).size.width > 1336) Container(),
-      Container(),
-      Container(),
-      proyectList(),
+
+      //proyectList(),
       //const LastPost(),
       //const TreeWidget(),
     ];
-
-
 
     return Column(children: [
       Container(
@@ -271,7 +254,7 @@ class _StatsWidgetState extends State<StatsWidget> {
         // Cantidad de elementos en la cuadrícula
         itemBuilder: (widget, index) {
           return Container(
-            padding:const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               color: Colors.transparent,
@@ -296,7 +279,6 @@ class BannerScreen extends StatefulWidget {
 }
 
 class _BannerScreenState extends State<BannerScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -345,6 +327,7 @@ class GlobalData extends ChangeNotifier {
     notifyListeners();
   }
 }
+
 var tecnoSelected = <dynamic>{};
 
 class TechnoWidget extends StatefulWidget {
@@ -376,8 +359,7 @@ class _TechnoWidgetState extends State<TechnoWidget> {
       tecnoSelected.add(false);
     }
     porfolio.getProyectosLength();
-    return
-      Container(
+    return Container(
       margin: const EdgeInsets.only(left: 10, right: 10),
       child: Flex(
           direction: Axis.vertical,
@@ -421,18 +403,14 @@ class _TechnoWidgetState extends State<TechnoWidget> {
                   ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child:
-
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.compass_calibration_sharp,
-                        color: Colors.black,
-                        size: 80,
-                      ),
-                    ),
-
-
+                child: Container(
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.compass_calibration_sharp,
+                    color: Colors.black,
+                    size: 80,
+                  ),
+                ),
               ),
             ),
             Flexible(
@@ -511,8 +489,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   width: 1,
                 ),
               ),
-              child:
-              Flex(
+              child: Flex(
                 direction: Axis.vertical,
                 children: [
                   Flexible(
@@ -525,7 +502,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                           const SizedBox(
                             height: 50,
                             width: 50,
-                            child:  Icon(Icons.search,
+                            child: Icon(Icons.search,
                                 color: Colors.white, size: 50),
                           ),
                           Container(
@@ -533,8 +510,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                           ),
                           const Text(
                             "Resultados",
-                            style:  TextStyle(
-                                color: Colors.white, fontSize: 30),
+                            style: TextStyle(color: Colors.white, fontSize: 30),
                           ),
                         ],
                       )),
@@ -551,8 +527,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                             ),
                           )))
                 ],
-              )
-          ),
+              )),
           actions: [
             TextButton(
               onPressed: () {
@@ -595,7 +570,6 @@ class _SearchWidgetState extends State<SearchWidget> {
       });
     }
 
-
     return Container(
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(
@@ -618,7 +592,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     child: Container(),
                   ),
                   for (var i = 1; i < cambios + 1; i++)
-                  /* if(tecnoSelected.elementAt(i)==true)*/
+                    /* if(tecnoSelected.elementAt(i)==true)*/
                     Flexible(
                         flex: 1,
                         child: Container(
@@ -660,54 +634,55 @@ class _SearchWidgetState extends State<SearchWidget> {
 
                         child: Center(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 500),
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  padding: EdgeInsets.only(top: isExpanded ? 400 : 0),
-                                  width: 100,
-                                  // Cambia la anchura con animación
-                                  height: isExpanded ? 0 : 100,
-                                  child: Container(
-                                    padding:
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 500),
+                              margin: const EdgeInsets.only(bottom: 10),
+                              padding:
+                                  EdgeInsets.only(top: isExpanded ? 400 : 0),
+                              width: 100,
+                              // Cambia la anchura con animación
+                              height: isExpanded ? 0 : 100,
+                              child: Container(
+                                padding:
                                     EdgeInsets.only(left: isExpanded ? 800 : 0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.search,
-                                        color: Colors.black,
-                                        size: 50,
-                                      ),
-                                    ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.search,
+                                    color: Colors.black,
+                                    size: 50,
                                   ),
                                 ),
-                                const Text(
-                                  "BUSCAR PROYECTOS",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 40,
-                                      letterSpacing: 5,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  "SELECCIONA UNA TECNOLOGÍA",
-                                  style: TextStyle(
-                                      color: Colors.white.withOpacity(0.4),
-                                      fontSize: 10),
-                                ),
-                                Divider(
+                              ),
+                            ),
+                            const Text(
+                              "BUSCAR PROYECTOS",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  letterSpacing: 5,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "SELECCIONA UNA TECNOLOGÍA",
+                              style: TextStyle(
                                   color: Colors.white.withOpacity(0.4),
-                                  indent: 100,
-                                  endIndent: 100,
-                                  thickness: 1,
-                                ),
-                              ],
-                            )),
+                                  fontSize: 10),
+                            ),
+                            Divider(
+                              color: Colors.white.withOpacity(0.4),
+                              indent: 100,
+                              endIndent: 100,
+                              thickness: 1,
+                            ),
+                          ],
+                        )),
                       )),
                   Flexible(
                     flex: 10,
@@ -716,7 +691,6 @@ class _SearchWidgetState extends State<SearchWidget> {
                 ],
               ),
             ),
-
             if (isExpanded == true)
               Container(
                 alignment: Alignment.bottomRight,
@@ -872,8 +846,6 @@ class _Fondo extends State<Fondo> {
 
   @override
   Widget build(BuildContext context) {
-
-
     double fontSizeInSp = 40.0;
     double fontSize = fontSizeInSp * MediaQuery.textScaleFactorOf(context);
 
@@ -1008,9 +980,9 @@ class _Fondo extends State<Fondo> {
                                           clipBehavior: Clip.antiAlias,
                                           direction: Axis.horizontal,
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Flexible(
                                                 flex: 1,
@@ -1018,10 +990,10 @@ class _Fondo extends State<Fondo> {
                                                     style: TextStyle(
                                                         fontSize: fontSize,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white
                                                             .withOpacity(_fade
-                                                            .toDouble())))),
+                                                                .toDouble())))),
                                             Flexible(
                                               flex: 10,
                                               child: Text(
@@ -1040,17 +1012,17 @@ class _Fondo extends State<Fondo> {
                                                 child: Container(
                                                   alignment: Alignment.center,
                                                   constraints:
-                                                  const BoxConstraints(
+                                                      const BoxConstraints(
                                                     maxWidth: 30,
                                                     maxHeight: 30,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: Colors.white
                                                         .withOpacity(
-                                                        _color.toDouble()),
+                                                            _color.toDouble()),
                                                     borderRadius:
-                                                    BorderRadius.circular(
-                                                        100),
+                                                        BorderRadius.circular(
+                                                            100),
                                                   ),
                                                 ))
                                           ],
@@ -1097,26 +1069,26 @@ class _LastPostState extends State<LastPost> {
                               child: Center(
                                 child: Container(
                                   width: 1,
-                                  height:
-                                  (j * animation).toDouble(),
+                                  height: (j * animation).toDouble(),
                                   color: Colors.white,
                                 ),
                               )),
                       ],
                     ),
-                    Container(child: Flexible(
-                        flex: 2,
-                        child:Center(
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            width: 140,
-                            height: 240,
-                            //clipBehavior: Clip.antiAlias,
-                            transform: Matrix4.identity()
-                              ..setEntry(
-                                  3, 2, 0.002) // Agrega perspectiva cónica
-                              ..rotateY(0.5),
-                            /*decoration: BoxDecoration(
+                    Container(
+                      child: Flexible(
+                          flex: 2,
+                          child: Center(
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              width: 140,
+                              height: 240,
+                              //clipBehavior: Clip.antiAlias,
+                              transform: Matrix4.identity()
+                                ..setEntry(
+                                    3, 2, 0.002) // Agrega perspectiva cónica
+                                ..rotateY(0.5),
+                              /*decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: Colors.white.withOpacity(0.2),
@@ -1133,27 +1105,27 @@ class _LastPostState extends State<LastPost> {
                               ],
                               color: Colors.white,
                             ),*/
-                            child:  Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Colors.black87,
-                                  width: 0,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.black87,
+                                    width: 0,
+                                  ),
+                                  color: Colors.white,
                                 ),
-                                color: Colors.white,
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.asset(
-                                'assets/home.png',
-                                fit: BoxFit.fitHeight,
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height,
-                                alignment: Alignment.topCenter,
+                                clipBehavior: Clip.antiAlias,
+                                child: Image.asset(
+                                  'assets/home.png',
+                                  fit: BoxFit.fitHeight,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                  alignment: Alignment.topCenter,
+                                ),
                               ),
                             ),
-                          ),
-                        )) ,),
-
+                          )),
+                    ),
                   ],
                 )),
             Flexible(
@@ -1176,8 +1148,8 @@ class _LastPostState extends State<LastPost> {
                             ),
                             Text(
                               "EL ÚLTIMO EN PUBLICARSE",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 10),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
                               textAlign: TextAlign.center,
                             ),
                             Divider(
@@ -1204,9 +1176,6 @@ class _LastPostState extends State<LastPost> {
                       ), */
           ],
         ));
-
-
-
   }
 }
 
@@ -1222,7 +1191,6 @@ class _TreeWidgetState extends State<TreeWidget> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-
         Flex(
           direction: Axis.vertical,
           children: [
@@ -1259,7 +1227,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                           children: [
                             Text(
                               "MODELOS",
-                              style:  TextStyle(
+                              style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 40,
                                   letterSpacing: 5,
@@ -1269,7 +1237,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                             Text(
                               "EL ÚLTIMO EN PUBLICARSE",
                               style:
-                              TextStyle(color: Colors.white, fontSize: 10),
+                                  TextStyle(color: Colors.white, fontSize: 10),
                               textAlign: TextAlign.center,
                             ),
                             Divider(
@@ -1286,14 +1254,145 @@ class _TreeWidgetState extends State<TreeWidget> {
           ],
         ),
         Container(
-
           decoration: BoxDecoration(
             color: Colors.transparent.withOpacity(0),
             borderRadius: BorderRadius.circular(10),
-
           ),
         ),
       ],
     );
+  }
+}
+
+class SwipeUp extends StatefulWidget {
+  const SwipeUp({super.key});
+
+  @override
+  State<SwipeUp> createState() => _SwipeUpState();
+}
+
+class _SwipeUpState extends State<SwipeUp> {
+  bool _isVisible = true;
+  bool _haveMooved = false;
+  int times = 0;
+
+  double margin = (MediaQueryData.fromView(window).size.height);
+  Future<void> _toggleVisibility() async {
+    await Future.delayed(const Duration(milliseconds: 700));
+    _isVisible = !_isVisible;
+    await Future.delayed(const Duration(milliseconds: 330));
+    if( times <1){
+    setState(() {
+      _isVisible = !_isVisible;
+      times=13;
+
+    });}else{
+      setState(() {
+        _isVisible = false;
+      });
+    }
+    await Future.delayed(const Duration(milliseconds: 900));
+  }
+  Future<void> move() async {
+
+    await Future.delayed(const Duration(milliseconds: 330));
+    if(!_haveMooved){
+    setState(() {
+      margin = 0;
+
+      _haveMooved = true;
+    });}
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    move();
+    _toggleVisibility();
+    return
+      Container(
+        child:
+        Flex(
+          direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+          for(var i = 16; i>0 ; i--)
+            Flexible(
+                flex: 1,
+                child: AnimatedOpacity(
+                duration: Duration(milliseconds: 200),
+                opacity: _isVisible ? 1.0 : 0.0,
+                child: AnimatedContainer(
+                  margin: EdgeInsets.only(top:margin.toDouble()+20*i),
+                  duration:Duration(milliseconds: 1000),
+                  curve: Curves.easeInOutExpo,
+                  height: 320,
+                  width: 3,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0),
+                        width: 0,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.grey.withOpacity(0.0),
+                          Colors.grey.withOpacity(0.1),
+                          Colors.grey.withOpacity(0.3),
+                          Colors.grey.withOpacity(0.4),
+                          Colors.grey.withOpacity(0.5),
+                          Colors.grey.withOpacity(0.6),
+                          Colors.blueAccent.withOpacity(0.8),
+                          Colors.cyanAccent.withOpacity(0.8),
+                          Colors.purpleAccent.withOpacity(0.6),
+                          Colors.white.withOpacity(1),
+                        ],
+                      )),
+
+                ))),
+              for(var i = 0; i< 16; i++)
+                Flexible(
+                    flex: 1,
+                    child: AnimatedOpacity(
+                        duration: Duration(milliseconds: 200),
+                        opacity: _isVisible ? 1.0 : 0.0,
+                        child: AnimatedContainer(
+                          margin: EdgeInsets.only(top:margin.toDouble()+20*i),
+                          duration:Duration(milliseconds: 1000),
+                          curve: Curves.easeInOutExpo,
+                          height: 320,
+                          width: 3,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0),
+                                width: 0,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Colors.grey.withOpacity(0.0),
+                                  Colors.grey.withOpacity(0.1),
+                                  Colors.grey.withOpacity(0.3),
+                                  Colors.grey.withOpacity(0.4),
+                                  Colors.grey.withOpacity(0.5),
+                                  Colors.grey.withOpacity(0.6),
+                                  Colors.blueAccent.withOpacity(0.8),
+                                  Colors.cyanAccent.withOpacity(0.8),
+                                  Colors.purpleAccent.withOpacity(0.6),
+                                  Colors.white.withOpacity(1),
+                                ],
+                              )),
+
+                        )))
+        ]
+        ),
+      );
+
   }
 }

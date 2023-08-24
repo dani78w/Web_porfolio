@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+
 import 'package:http/http.dart' as http;
 
 import 'dart:ui';
@@ -16,12 +17,15 @@ import 'classes.dart';
 import 'globalData.dart';
 SyncApiPorfolio sc = SyncApiPorfolio();
 
-void main() {
+Future<void> main() async {
 
+  
   sc.syncPorfolio().then((value) => runApp(
     ChangeNotifierProvider(
       create: (context) => GlobalData(),
-      child: MyApp(),
+      child:         Container(
+        child: MyApp(),
+      )
     ),
   ));
 
@@ -58,7 +62,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
-      home:MyHomePage(title: 'Flutter Demo Home Page'),
+      home:
+      Container(
+        color: CupertinoColors.black,
+        child: MyHomePage(title: 'Portfolio Daniel Arribas'),
+      ),
+      //MyHomePage(title: 'Flutter Demo Home Page'),
 
 
     );
@@ -279,6 +288,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showPopupEmail(BuildContext context) {
+
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -808,6 +819,7 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.topLeft,
             ),
           ),
+          SwipeUp(),
         ],
       );
     } else {
