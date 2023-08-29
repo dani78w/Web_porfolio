@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-
 import 'package:http/http.dart' as http;
 
 import 'dart:ui';
@@ -15,26 +14,22 @@ import 'package:provider/provider.dart';
 import 'package:web_porfolio/widgets.dart';
 import 'classes.dart';
 import 'globalData.dart';
+
 SyncApiPorfolio sc = SyncApiPorfolio();
 
 Future<void> main() async {
-
-  
-  sc.syncPorfolio().then((value) => runApp(
-    ChangeNotifierProvider(
-      create: (context) => GlobalData(),
-      child:         Container(
-        child: MyApp(),
-      )
-    ),
-  ));
-
-
+  sc.syncPorfolio()
+      .then((value) => runApp(
+        ChangeNotifierProvider(
+            create: (context) => GlobalData(),
+            child:
+              MyApp(),
+            ),
+      ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   // This widget is the root of your application.
   @override
@@ -62,26 +57,23 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
-      home:
-      Container(
+      home: Container(
         color: CupertinoColors.black,
         child: MyHomePage(title: 'Portfolio Daniel Arribas'),
       ),
       //MyHomePage(title: 'Flutter Demo Home Page'),
-
-
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> {
   /* Future<http.Response> fetchPost() async {
     var resultado= await http.get(Uri(scheme:"http",host:"192.168.1.163",port:8090,path:'/first/cosas/Tables'))
@@ -90,12 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return JsonDecoder().convert(resultado.toString());
   }*/
 
-
   String textoFinal = "DANIEL";
   final apellido = "ARRIBAS";
   final subapellido = "SORANDO";
   final svgString =
-  '''<svg width="524" height="596" viewBox="0 0 524 596" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M277.75 5.67062L507.29 138.195C517.036 143.822 523.04 154.221 523.04 165.475V430.525C523.04 441.779 517.036 452.178 507.29 457.805L277.75 590.329C268.004 595.956 255.996 595.956 246.25 590.329L16.7103 457.805C6.96421 452.178 0.960327 441.779 0.960327 430.525V165.475C0.960327 154.221 6.9642 143.822 16.7103 138.195L246.25 5.67062C255.996 0.0436921 268.004 0.0436845 277.75 5.67062Z" stroke="white"/></svg>''';
+      '''<svg width="524" height="596" viewBox="0 0 524 596" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M277.75 5.67062L507.29 138.195C517.036 143.822 523.04 154.221 523.04 165.475V430.525C523.04 441.779 517.036 452.178 507.29 457.805L277.75 590.329C268.004 595.956 255.996 595.956 246.25 590.329L16.7103 457.805C6.96421 452.178 0.960327 441.779 0.960327 430.525V165.475C0.960327 154.221 6.9642 143.822 16.7103 138.195L246.25 5.67062C255.996 0.0436921 268.004 0.0436845 277.75 5.67062Z" stroke="white"/></svg>''';
   var degradado = [
     Colors.teal.shade100.withOpacity(0.5),
     Colors.purpleAccent.withOpacity(0.1),
@@ -124,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 1,
                 ),
               ),
-              child:  Flex(
+              child: Flex(
                 direction: Axis.vertical,
                 children: [
                   Flexible(
@@ -162,12 +153,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   const Flex(
                                       direction: Axis.horizontal,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Flexible(
-
                                           flex: 1,
-                                          child:  Icon(Icons.person,
+                                          child: Icon(Icons.person,
                                               color: Colors.white, size: 25),
                                         ),
                                         Flexible(
@@ -179,12 +169,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 color: Colors.white,
                                                 fontSize: 20),
                                           ),
-
                                         ),
                                       ]),
                                   const Flex(
                                       direction: Axis.horizontal,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Flexible(
                                           flex: 1,
@@ -205,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ),
                                         Flexible(
                                           flex: 1,
-                                          child:  Icon(Icons.arrow_upward,
+                                          child: Icon(Icons.arrow_upward,
                                               color: Colors.black, size: 20),
                                         ),
                                         Flexible(
@@ -216,7 +206,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 color: Colors.black,
                                                 fontSize: 15),
                                           ),
-
                                         ),
                                       ]),
                                   Container(
@@ -237,9 +226,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: IconButton(
                                       icon: const Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             "Visitar",
@@ -252,16 +241,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ],
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context); // Cierra el popup
+                                        Navigator.pop(
+                                            context); // Cierra el popup
                                       },
                                     ),
                                   ),
                                 ],
                               ))))
                 ],
-              )
-
-          ),
+              )),
           actions: [
             TextButton(
               onPressed: () {
@@ -288,8 +276,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showPopupEmail(BuildContext context) {
-
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -323,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           const SizedBox(
                             height: 50,
                             width: 50,
-                            child:  Icon(Icons.android,
+                            child: Icon(Icons.android,
                                 color: Colors.white, size: 50),
                           ),
                           Container(
@@ -348,13 +334,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   const Flex(
                                       direction: Axis.horizontal,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Flexible(
                                           flex: 1,
                                           child: Icon(Icons.email,
                                               color: Colors.white, size: 25),
-
                                         ),
                                         Flexible(
                                           flex: 3,
@@ -365,7 +350,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 color: Colors.white,
                                                 fontSize: 15),
                                           ),
-
                                         ),
                                       ]),
                                   Container(
@@ -386,9 +370,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: IconButton(
                                       icon: const Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             "Visitar",
@@ -401,16 +385,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ],
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context); // Cierra el popup
+                                        Navigator.pop(
+                                            context); // Cierra el popup
                                       },
                                     ),
                                   ),
                                 ],
                               ))))
                 ],
-              )
-
-          ),
+              )),
           actions: [
             TextButton(
               onPressed: () {
@@ -437,7 +420,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget timeline(ScrollController scrollController) {
-
     var rangos = [];
 
     for (var i = 0; i < porfolio.tags.length; i++) {
@@ -463,7 +445,6 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         GlassmorphicContainer(
             margin: EdgeInsets.only(
-
                 top: MediaQueryData.fromView(window).size.height - 120,
                 left: 0),
             width: MediaQueryData.fromView(window).size.width,
@@ -497,6 +478,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             )),
+
+
         Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.only(bottom: 15, left: 20),
@@ -595,7 +578,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         width: 17,
                                         height: 20,
                                         margin:
-                                        const EdgeInsets.only(bottom: 50),
+                                            const EdgeInsets.only(bottom: 50),
                                         child: Center(
                                           child: Container(
                                             width: 1,
@@ -684,17 +667,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                         color: Colors.white, size: 20),
                                     onPressed: () {
                                       scrollController.animateTo(
-                                          scrollController.position.pixels -
-                                              85,
-                                          duration: const Duration(
-                                              milliseconds: 100),
+                                          scrollController.position.pixels - 85,
+                                          duration:
+                                              const Duration(milliseconds: 100),
                                           curve: Curves.easeIn);
                                     }),
                               ),
                               const Spacer(
                                 flex: 1,
                               ),
-                              Flexible(flex: 10,
+                              Flexible(
+                                flex: 10,
                                 child: IconButton(
                                   icon: const Icon(Icons.arrow_forward_ios,
                                       color: Colors.white, size: 20),
@@ -702,18 +685,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                     scrollController.animateTo(
                                         scrollController.position.pixels + 85,
                                         duration:
-                                        const Duration(milliseconds: 100),
+                                            const Duration(milliseconds: 100),
                                         curve: Curves.easeIn);
                                   },
                                 ),
-
                               ),
                               const Spacer(
                                 flex: 1,
                               ),
                             ],
                           ),
-
                         )
                       ],
                     )),
@@ -756,12 +737,11 @@ class _MyHomePageState extends State<MyHomePage> {
               Column(
                 children: [
                   Center(
-
-                      child: Image.asset(porfolio.proyectos.elementAt(proyecto).rutaFoto,
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width),
-                    ),
-
+                    child: Image.asset(
+                        porfolio.proyectos.elementAt(proyecto).rutaFoto,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width),
+                  ),
                   const SizedBox(
                     height: 120,
                     width: 100,
@@ -819,7 +799,6 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.topLeft,
             ),
           ),
-          SwipeUp(),
         ],
       );
     } else {
@@ -919,48 +898,51 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         diapositivas(tagSeleccionado),
         timeline(scrollController),
-
       ]),
     );
   }
 }
 
-
-
 class LoadingScreen extends StatelessWidget {
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: FutureBuilder(
-        future: sc.isDoneSync(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const MyHomePage(title: 'Flutter Demo Home Page');
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-          return  Container(
-        color: Colors.black,
-        alignment: Alignment.center,
-          transformAlignment: Alignment.center,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child:
-            Flex(
+        body: FutureBuilder(
+      future: sc.isDoneSync(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return const
+              MyHomePage(title: 'Flutter Demo Home Page');
+        } else if (snapshot.hasError) {
+          return Stack(
+            children: [
+              Fondo(),
+              Center(
+                child: Text(
+                  "CARGANDO",
+                  style: TextStyle(color: Colors.cyanAccent, fontSize: 50),
+                ),
+              )
+            ],
+          );
+        }
+        return Container(
+            color: Colors.black,
+            alignment: Alignment.center,
+            transformAlignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Flex(
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   flex: 6,
-                  child:AnimatedContainer(
+                  child: AnimatedContainer(
                     duration: const Duration(milliseconds: 1000),
                     curve: Curves.easeIn,
-                    transform: Matrix4.rotationZ(pi /-4),
+                    transform: Matrix4.rotationZ(pi / -4),
                     transformAlignment: Alignment.center,
                     width: 80,
                     height: 80,
@@ -972,40 +954,26 @@ class LoadingScreen extends StatelessWidget {
                         width: 1,
                       ),
                     ),
-                    child:
-
-                    CupertinoActivityIndicator(
+                    child: CupertinoActivityIndicator(
                       color: Colors.cyanAccent,
                       radius: 20,
-
-
-
                     ),
                     //const Text("SINCRONIZANDO",style: TextStyle(color: Colors.cyanAccent,fontSize: 10),
-                  ) ,
+                  ),
                 ),
                 Spacer(
                   flex: 1,
                 ),
                 Flexible(
                   flex: 2,
-                  child:Text("SINCRONIZANDO",style: TextStyle(color: Colors.cyanAccent,fontSize: 10),) ,
+                  child: Text(
+                    "SINCRONIZANDO",
+                    style: TextStyle(color: Colors.cyanAccent, fontSize: 10),
+                  ),
                 )
-
               ],
-            )
-
-
-      );
-
-
-
-        },
-
+            ));
+      },
     ));
   }
 }
-
-
-
-

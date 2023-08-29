@@ -133,7 +133,7 @@ class SyncApiPorfolio {
   Future<List<Proyecto>> fetchProyectos() async {
 
     final response = await http
-        .get(Uri.parse('http://192.168.1.163:8090/first/cosas/Tables'));
+        .get(Uri.parse(urlApi));
     if (response.statusCode == 200) {
       print("Descarga de proyectos correcta");
 

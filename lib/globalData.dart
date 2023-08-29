@@ -16,9 +16,12 @@ import 'classes.dart';
 
   Porfolio porfolio = Porfolio([home]);
 
+  var urlApi= "http://188.127.189.173:8090/first/cosas/Tables";
+
 
   var tagSeleccionado = 0;
 
   ScrollController scrollController = ScrollController(
       keepScrollOffset: false,
       initialScrollOffset: - PlatformDispatcher.instance.implicitView!.physicalSize.width);
+

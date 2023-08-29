@@ -238,36 +238,45 @@ class _StatsWidgetState extends State<StatsWidget> {
       //const TreeWidget(),
     ];
 
-    return Column(children: [
-      Container(
-        height: 350,
-      ),
-      GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 660, // Ancho máximo de cada elemento
-          mainAxisSpacing: 8.0, // Espacio vertical entre elementos
-          crossAxisSpacing: 8.0, // Espacio horizontal entre elementos
-        ),
-        itemCount: widgets.length,
-        // Cantidad de elementos en la cuadrícula
-        itemBuilder: (widget, index) {
-          return Container(
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.transparent,
+    return Stack(
+      children: [
+        //querico
+        Column(children: [
+          Container(
+            height: 100,
+          ),
+          Container(
+            height: 70,
+            child: SwipeUp(),
+          ),
+          Container(
+            height: 150,
+          ),
+          GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 660, // Ancho máximo de cada elemento
+              mainAxisSpacing: 8.0, // Espacio vertical entre elementos
+              crossAxisSpacing: 8.0, // Espacio horizontal entre elementos
             ),
-            alignment: Alignment.center,
-            child: widgets[index],
-          );
-        },
-      ),
-      Container(
-        height: 350,
-      ),
-    ]);
+            itemCount: widgets.length,
+            // Cantidad de elementos en la cuadrícula
+            itemBuilder: (widget, index) {
+              return Container(
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.transparent,
+                ),
+                alignment: Alignment.center,
+                child: widgets[index],
+              );
+            },
+          ),
+        ]),
+      ],
+    );
   }
 }
 
@@ -833,7 +842,6 @@ class _Fondo extends State<Fondo> {
     Colors.purpleAccent.withOpacity(0.1),
   ];
   var _opacidad = 0.0;
-  var aux = true;
   var tags = [
     "HOME",
     "PR 1",
@@ -849,8 +857,10 @@ class _Fondo extends State<Fondo> {
     double fontSizeInSp = 40.0;
     double fontSize = fontSizeInSp * MediaQuery.textScaleFactorOf(context);
 
+    bool fondoMostrado = false;
     Future mostrarFondo() async {
-      await Future.delayed(const Duration(seconds: 1));
+      fondoMostrado = true;
+      await Future.delayed(const Duration(seconds: 3));
       if (_opacidad < 1) {
         for (int i = 0; i < 9; i++) {
           setState(() {
@@ -936,103 +946,92 @@ class _Fondo extends State<Fondo> {
 
     //desenfoque();
     return Scaffold(
-        backgroundColor: Colors.black,
-        extendBodyBehindAppBar: true,
-        body: Center(
-          child: GestureDetector(
-              onTap: () {},
-              child: ListView(
+      backgroundColor: Colors.black,
+      extendBodyBehindAppBar: true,
+      body: Center(
+          child: ListView(
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            color: Colors.black,
+            height: MediaQuery.of(context).size.height - 400,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.loose,
                 children: [
-                  Container(
-                    alignment: Alignment.topCenter,
-                    color: Colors.black,
-                    height: MediaQuery.of(context).size.height - 300,
-                    width: MediaQuery.of(context).size.width,
-                    child: Stack(
-                        alignment: Alignment.center,
-                        fit: StackFit.loose,
-                        children: [
-                          if (aux == true)
-                            for (var i = 1; i < 4; i++)
-                              AnimatedContainer(
-                                transform: Matrix4.rotationZ(_rotation * i),
-                                transformAlignment: Alignment.center,
-                                width: _counter.toDouble() / (i * 0.9),
-                                height: _counter2.toDouble() / (i * 0.9),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0),
-                                ),
-                                duration: Duration(milliseconds: 300 * i),
-                                curve: Curves.easeInExpo,
-                                child: SvgPicture.string(svgString),
-                              ),
-                          if (aux == true)
-                            BackdropFilter(
-                                filter: ImageFilter.blur(
-                                    sigmaX: _blurEffect, sigmaY: _blurEffect),
-                                // Ajusta los valores según prefieras
-                                child: SizedBox(
-                                    height: MediaQuery.of(context).size.height,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Container(
+                  for (var i = 1; i < 4; i++)
+                    AnimatedContainer(
+                      transform: Matrix4.rotationZ(_rotation * i),
+                      transformAlignment: Alignment.center,
+                      width: _counter.toDouble() / (i * 0.9),
+                      height: _counter2.toDouble() / (i * 0.9),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0),
+                      ),
+                      duration: Duration(milliseconds: 300 * i),
+                      curve: Curves.easeInExpo,
+                      child: SvgPicture.string(svgString),
+                    ),
+                  BackdropFilter(
+                      filter: ImageFilter.blur(
+                          sigmaX: _blurEffect, sigmaY: _blurEffect),
+                      // Ajusta los valores según prefieras
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child: Container(
+                              alignment: Alignment.center,
+                              child: Flex(
+                                clipBehavior: Clip.antiAlias,
+                                direction: Axis.horizontal,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                      flex: 1,
+                                      child: Text("/ ",
+                                          style: TextStyle(
+                                              fontSize: fontSize,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white.withOpacity(
+                                                  _fade.toDouble())))),
+                                  Flexible(
+                                    flex: 10,
+                                    child: Text(
+                                      _textoAnimado,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        letterSpacing: 10,
+                                        fontSize: fontSize,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                      flex: 1,
+                                      child: Container(
                                         alignment: Alignment.center,
-                                        child: Flex(
-                                          clipBehavior: Clip.antiAlias,
-                                          direction: Axis.horizontal,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Flexible(
-                                                flex: 1,
-                                                child: Text("/ ",
-                                                    style: TextStyle(
-                                                        fontSize: fontSize,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white
-                                                            .withOpacity(_fade
-                                                                .toDouble())))),
-                                            Flexible(
-                                              flex: 10,
-                                              child: Text(
-                                                _textoAnimado,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  letterSpacing: 10,
-                                                  fontSize: fontSize,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                            Flexible(
-                                                flex: 1,
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  constraints:
-                                                      const BoxConstraints(
-                                                    maxWidth: 30,
-                                                    maxHeight: 30,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white
-                                                        .withOpacity(
-                                                            _color.toDouble()),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100),
-                                                  ),
-                                                ))
-                                          ],
-                                        )))),
-                        ]),
-                  ),
-                  const StatsWidget()
-                ],
-              )),
-        ));
+                                        constraints: const BoxConstraints(
+                                          maxWidth: 30,
+                                          maxHeight: 30,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white
+                                              .withOpacity(_color.toDouble()),
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                      ))
+                                ],
+                              )))),
+                ]),
+          ),
+          const StatsWidget()
+        ],
+      )),
+    );
   }
 }
 
@@ -1275,124 +1274,109 @@ class _SwipeUpState extends State<SwipeUp> {
   bool _isVisible = true;
   bool _haveMooved = false;
   int times = 0;
+  int expand = 16 ;
 
   double margin = (MediaQueryData.fromView(window).size.height);
-  Future<void> _toggleVisibility() async {
-    await Future.delayed(const Duration(milliseconds: 700));
-    _isVisible = !_isVisible;
-    await Future.delayed(const Duration(milliseconds: 330));
-    if( times <1){
-    setState(() {
-      _isVisible = !_isVisible;
-      times=13;
 
-    });}else{
+  Future<void> move() async {
+    await Future.delayed(const Duration(milliseconds: 330));
+    if (!_haveMooved) {
       setState(() {
-        _isVisible = false;
+        margin = 0;
+
+        _haveMooved = true;
+
+      });
+      setState(() {
+
+        expand = 16;
       });
     }
-    await Future.delayed(const Duration(milliseconds: 900));
-  }
-  Future<void> move() async {
-
-    await Future.delayed(const Duration(milliseconds: 330));
-    if(!_haveMooved){
-    setState(() {
-      margin = 0;
-
-      _haveMooved = true;
-    });}
     await Future.delayed(const Duration(milliseconds: 300));
   }
-
 
   @override
   Widget build(BuildContext context) {
     move();
-    _toggleVisibility();
-    return
-      Container(
-        child:
-        Flex(
+    return Container(
+      transform: Matrix4.rotationX(pi),
+      child: Flex(
           direction: Axis.horizontal,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-            children: [
-          for(var i = 16; i>0 ; i--)
-            Flexible(
-                flex: 1,
-                child: AnimatedOpacity(
-                duration: Duration(milliseconds: 200),
-                opacity: _isVisible ? 1.0 : 0.0,
-                child: AnimatedContainer(
-                  margin: EdgeInsets.only(top:margin.toDouble()+20*i),
-                  duration:Duration(milliseconds: 1000),
-                  curve: Curves.easeInOutExpo,
-                  height: 320,
-                  width: 3,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0),
-                        width: 0,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Colors.grey.withOpacity(0.0),
-                          Colors.grey.withOpacity(0.1),
-                          Colors.grey.withOpacity(0.3),
-                          Colors.grey.withOpacity(0.4),
-                          Colors.grey.withOpacity(0.5),
-                          Colors.grey.withOpacity(0.6),
-                          Colors.blueAccent.withOpacity(0.8),
-                          Colors.cyanAccent.withOpacity(0.8),
-                          Colors.purpleAccent.withOpacity(0.6),
-                          Colors.white.withOpacity(1),
-                        ],
-                      )),
-
-                ))),
-              for(var i = 0; i< 16; i++)
-                Flexible(
-                    flex: 1,
-                    child: AnimatedOpacity(
-                        duration: Duration(milliseconds: 200),
-                        opacity: _isVisible ? 1.0 : 0.0,
-                        child: AnimatedContainer(
-                          margin: EdgeInsets.only(top:margin.toDouble()+20*i),
-                          duration:Duration(milliseconds: 1000),
-                          curve: Curves.easeInOutExpo,
-                          height: 320,
-                          width: 3,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0),
-                                width: 0,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [
-                                  Colors.grey.withOpacity(0.0),
-                                  Colors.grey.withOpacity(0.1),
-                                  Colors.grey.withOpacity(0.3),
-                                  Colors.grey.withOpacity(0.4),
-                                  Colors.grey.withOpacity(0.5),
-                                  Colors.grey.withOpacity(0.6),
-                                  Colors.blueAccent.withOpacity(0.8),
-                                  Colors.cyanAccent.withOpacity(0.8),
-                                  Colors.purpleAccent.withOpacity(0.6),
-                                  Colors.white.withOpacity(1),
-                                ],
-                              )),
-
-                        )))
-        ]
-        ),
-      );
-
+          children: [
+            for (var i = 16; i > 0; i--)
+              Flexible(
+                  flex: 1,
+                  child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 200),
+                      opacity: _isVisible ? 1.0 : 0.0,
+                      child: AnimatedContainer(
+                        margin:
+                            EdgeInsets.only(top: margin.toDouble() + expand * i),
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.easeInOutExpo,
+                        height: 120,
+                        width: 2,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0),
+                              width: 0,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.0),
+                                Colors.black.withOpacity(0.1),
+                                Colors.black.withOpacity(0.3),
+                                Colors.black.withOpacity(0.4),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.6),
+                                Colors.blueAccent.withOpacity(0.8),
+                                Colors.cyanAccent.withOpacity(0.8),
+                                Colors.purpleAccent.withOpacity(0.6),
+                                Colors.white.withOpacity(1),
+                              ],
+                            )),
+                      ))),
+            for (var i = 0; i < 16; i++)
+              Flexible(
+                  flex: 1,
+                  child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 200),
+                      opacity: _isVisible ? 1.0 : 0.0,
+                      child: AnimatedContainer(
+                        margin:
+                            EdgeInsets.only(top: margin.toDouble() + expand * i),
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.easeInOutExpo,
+                        height: 120,
+                        width: 3,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0),
+                              width: 0,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.0),
+                                Colors.black.withOpacity(0.1),
+                                Colors.black.withOpacity(0.3),
+                                Colors.black.withOpacity(0.4),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.6),
+                                Colors.blueAccent.withOpacity(0.8),
+                                Colors.cyanAccent.withOpacity(0.8),
+                                Colors.purpleAccent.withOpacity(0.6),
+                                Colors.white.withOpacity(1),
+                              ],
+                            )),
+                      )))
+          ]),
+    );
   }
 }
