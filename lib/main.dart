@@ -82,11 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return JsonDecoder().convert(resultado.toString());
   }*/
 
-  String textoFinal = "DANIEL";
-  final apellido = "ARRIBAS";
-  final subapellido = "SORANDO";
-  final svgString =
-      '''<svg width="524" height="596" viewBox="0 0 524 596" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M277.75 5.67062L507.29 138.195C517.036 143.822 523.04 154.221 523.04 165.475V430.525C523.04 441.779 517.036 452.178 507.29 457.805L277.75 590.329C268.004 595.956 255.996 595.956 246.25 590.329L16.7103 457.805C6.96421 452.178 0.960327 441.779 0.960327 430.525V165.475C0.960327 154.221 6.9642 143.822 16.7103 138.195L246.25 5.67062C255.996 0.0436921 268.004 0.0436845 277.75 5.67062Z" stroke="white"/></svg>''';
+
   var degradado = [
     Colors.teal.shade100.withOpacity(0.5),
     Colors.purpleAccent.withOpacity(0.1),
@@ -785,6 +781,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget diapositivas(int pantalla) {
+
     var margin = 83.00;
     if (pantalla == 0) {
       return Stack(

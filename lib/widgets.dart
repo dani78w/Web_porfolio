@@ -57,23 +57,43 @@ class _StatsWidgetState extends State<StatsWidget> {
       direction: Axis.vertical,
       children: [
         const Flexible(
+          flex: 2,
           child: Text(
             "Tecnologias",
             style: TextStyle(color: Colors.cyanAccent, fontSize: 50),
           ),
         ),
         Flexible(
-          child: Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: List.generate(list.length, (index) {
-              return Chip(
-                label: Text(list[index]),
-                backgroundColor: Colors.cyanAccent,
-              );
-            }),
-          ),
-        )
+            flex: 1,
+            child: Stack(
+              children: [
+                ListView(
+                    scrollDirection: Axis.horizontal,
+                    clipBehavior: Clip.antiAlias,
+                    children: [
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: List.generate(list.length, (index) {
+                          return Chip(
+                            label: Text(list[index]),
+                            backgroundColor: Colors.cyanAccent,
+                          );
+                        }),
+                      ),
+                      Container(
+                        height: 1000,
+
+                      )
+                    ]),
+                Container(
+                  alignment: Alignment.topCenter,
+                  height: 100,
+                  width: 1000,
+                  color: Colors.red,
+                ),
+              ],
+            ))
       ],
     );
   }
@@ -84,30 +104,31 @@ class _StatsWidgetState extends State<StatsWidget> {
         margin: const EdgeInsets.only(left: 30, right: 30),
         child: Stack(
           children: [
-            Container(
-              child: Flex(
-                  direction: Axis.vertical,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  clipBehavior: Clip.antiAlias,
-                  children: [
-                    Expanded(
-                      child: Container(
-                          margin: const EdgeInsets.only(left: 5, right: 5),
-                          transform: Matrix4.rotationZ(0.5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Colors.purpleAccent,
-                                  Colors.cyanAccent
-                                ],
-                              ))),
-                    ),
-                  ]),
-            ),
+            if (MediaQuery.of(context).size.width > 667)
+              Container(
+                child: Flex(
+                    direction: Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    clipBehavior: Clip.antiAlias,
+                    children: [
+                      Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.only(left: 5, right: 5),
+                            transform: Matrix4.rotationZ(0.5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.purpleAccent,
+                                    Colors.cyanAccent
+                                  ],
+                                ))),
+                      ),
+                    ]),
+              ),
             Container(
               child: Flex(
                   direction: Axis.vertical,
@@ -149,15 +170,6 @@ class _StatsWidgetState extends State<StatsWidget> {
                                 width: 600,
                                 height: 150,
                                 decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.5),
-                                      spreadRadius: 10,
-                                      blurRadius: 20,
-                                      offset: const Offset(
-                                          0, 5), // changes position of shadow
-                                    ),
-                                  ],
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.black,
                                   border: Border.all(
@@ -231,7 +243,6 @@ class _StatsWidgetState extends State<StatsWidget> {
       proyectos(),
       const TechnoWidget(),
       const SearchWidget(),
-      if (MediaQuery.of(context).size.width > 1336) Container(),
 
       //proyectList(),
       //const LastPost(),
@@ -242,16 +253,6 @@ class _StatsWidgetState extends State<StatsWidget> {
       children: [
         //querico
         Column(children: [
-          Container(
-            height: 100,
-          ),
-          Container(
-            height: 70,
-            child: SwipeUp(),
-          ),
-          Container(
-            height: 150,
-          ),
           GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -274,6 +275,30 @@ class _StatsWidgetState extends State<StatsWidget> {
               );
             },
           ),
+          Container(
+            height: 180,
+          ),
+          Column(
+            children: [
+              for (var i = 0; i < 10; i++)
+                Column(
+                  children: [
+                    Container(
+                      height: 5 * (i.toDouble()),
+                      color: Colors.white.withOpacity(0.1*i),
+                    ),
+                    Container(
+                      height: 2 * (i.toDouble()),
+                      color: Colors.black,
+                    )
+                  ],
+                )
+            ],
+          ),
+          Container(
+            height: 700,
+            color: Colors.white,
+          )
         ]),
       ],
     );
@@ -288,8 +313,11 @@ class BannerScreen extends StatefulWidget {
 }
 
 class _BannerScreenState extends State<BannerScreen> {
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -309,6 +337,7 @@ class _BannerScreenState extends State<BannerScreen> {
             color: Colors.black,
           ),
           child: ListView(
+
             children: [
               InteractiveViewer(
                   panEnabled: true,
@@ -360,6 +389,8 @@ class _TechnoWidgetState extends State<TechnoWidget> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     List list = [];
@@ -368,103 +399,115 @@ class _TechnoWidgetState extends State<TechnoWidget> {
       tecnoSelected.add(false);
     }
     porfolio.getProyectosLength();
-    return Container(
-      margin: const EdgeInsets.only(left: 10, right: 10),
-      child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          clipBehavior: Clip.antiAlias,
-          children: [
-            const Flexible(
-                flex: 2,
-                child: Column(
-                  children: [
-                    Text(
-                      "TECNOLOGÍAS",
-                      style: TextStyle(
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          alignment: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black45.withOpacity(0.0),
+                Colors.purpleAccent.withOpacity(0.1),
+                Colors.blueAccent.withOpacity(0.6),
+                Colors.cyanAccent.withOpacity(1),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.start,
+              clipBehavior: Clip.antiAlias,
+              children: [
+                const Flexible(
+                    flex: 4,
+                    child: Column(
+                      children: [
+                        Text(
+                          "TECNOLOGÍAS",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              letterSpacing: 5,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          "USADAS EN LOS PROYECTOS",
+                          style: TextStyle(color: Colors.white, fontSize: 10),
+                          textAlign: TextAlign.center,
+                        ),
+                        Divider(
                           color: Colors.white,
-                          fontSize: 40,
-                          letterSpacing: 5,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "USADAS EN LOS PROYECTOS",
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                    Divider(
-                      color: Colors.white,
-                      indent: 100,
-                      endIndent: 100,
-                      thickness: 1,
-                    ),
-                  ],
-                )),
-            Flexible(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Colors.blueAccent.withOpacity(1),
-                    Colors.purpleAccent.withOpacity(0.7),
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.compass_calibration_sharp,
-                    color: Colors.black,
-                    size: 80,
-                  ),
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 4,
-              child: Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: List.generate(list.length, (index) {
-                  return FilterChip(
-                    selected: tecnoSelected.contains(list[index]),
-                    checkmarkColor: Colors.black,
-                    selectedShadowColor: Colors.cyanAccent,
-                    pressElevation: 3,
-                    selectedColor: Colors.blueAccent.withOpacity(0.9),
-                    label: Text(
-                      list[index],
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    avatarBorder: const CircleBorder(),
-                    avatar: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Text(
-                          (index + 1).toString(),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 10),
-                        )),
-                    backgroundColor: Colors.black,
-                    onSelected: (bool value) {
-                      setState(() {
-                        if (tecnoSelected.contains(list[index]) == false) {
-                          tecnoSelected.add(list[index]);
-                          Provider.of<GlobalData>(context, listen: false)
-                              .value++;
-                        } else {
-                          tecnoSelected.remove(list[index]);
-                          Provider.of<GlobalData>(context, listen: false)
-                              .value--;
-                        }
-                      });
-                    },
-                  );
-                }),
-              ),
-            ),
-          ]),
+                          indent: 100,
+                          endIndent: 100,
+                          thickness: 1,
+                        ),
+                      ],
+                    )),
+                Flexible(
+                    flex: 10,
+                    child: ListView(
+
+                      addRepaintBoundaries: true,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        Container(
+                          height: 10,
+                        ),
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: List.generate(list.length, (index) {
+                            return FilterChip(
+                              selected: tecnoSelected.contains(list[index]),
+                              checkmarkColor: Colors.black,
+                              selectedShadowColor: Colors.black87,
+                              pressElevation: 3,
+                              selectedColor: Colors.black87,
+                              label: Text(
+                                list[index],
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              avatarBorder: const CircleBorder(),
+                              avatar: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Text(
+                                    (index + 1).toString(),
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 10),
+                                  )),
+                              backgroundColor: Colors.black,
+                              onSelected: (bool value) {
+                                setState(() {
+                                  if (tecnoSelected.contains(list[index]) ==
+                                      false) {
+                                    tecnoSelected.add(list[index]);
+                                    Provider.of<GlobalData>(context,
+                                            listen: false)
+                                        .value++;
+                                  } else {
+                                    tecnoSelected.remove(list[index]);
+                                    Provider.of<GlobalData>(context,
+                                            listen: false)
+                                        .value--;
+                                  }
+                                });
+                              },
+                            );
+                          }),
+                        ),
+                      ],
+                    )),
+              ]),
+        ),
+      ],
     );
   }
 }
@@ -596,10 +639,6 @@ class _SearchWidgetState extends State<SearchWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Flexible(
-                    flex: 3,
-                    child: Container(),
-                  ),
                   for (var i = 1; i < cambios + 1; i++)
                     /* if(tecnoSelected.elementAt(i)==true)*/
                     Flexible(
@@ -611,9 +650,9 @@ class _SearchWidgetState extends State<SearchWidget> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
+                                  Colors.purpleAccent.withOpacity(0.9),
                                   Colors.blueAccent
                                       .withOpacity(10 * i / (cambios * 10)),
-                                  Colors.purpleAccent.withOpacity(0.9),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(10),
@@ -669,34 +708,28 @@ class _SearchWidgetState extends State<SearchWidget> {
                                 ),
                               ),
                             ),
-                            const Text(
-                              "BUSCAR PROYECTOS",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  letterSpacing: 5,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "SELECCIONA UNA TECNOLOGÍA",
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(0.4),
-                                  fontSize: 10),
-                            ),
-                            Divider(
-                              color: Colors.white.withOpacity(0.4),
-                              indent: 100,
-                              endIndent: 100,
-                              thickness: 1,
-                            ),
+                            if (!isExpanded)
+                              Text(
+                                "BUSCADOR",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 40),
+                              ),
+                            if (!isExpanded)
+                              Text(
+                                "SELECCIONA UNA TECNOLOGÍA",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              ),
+                            if (!isExpanded)
+                              Divider(
+                                color: Colors.white,
+                                indent: 100,
+                                endIndent: 100,
+                                thickness: 1,
+                              ),
                           ],
                         )),
                       )),
-                  Flexible(
-                    flex: 10,
-                    child: Container(),
-                  )
                 ],
               ),
             ),
@@ -831,12 +864,11 @@ class _Fondo extends State<Fondo> {
 <path d="M115 2L6.73387 69.0675C3.79074 70.8907 2 74.1065 2 77.5686L2 193" stroke="white" stroke-width="4"/>
 </svg>
           ''';*/
-  final svgString = '''
-      <svg width="524" height="596" viewBox="0 0 524 596" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M277.75 5.67062L507.29 138.195C517.036 143.822 523.04 154.221 523.04 165.475V430.525C523.04 441.779 517.036 452.178 507.29 457.805L277.75 590.329C268.004 595.956 255.996 595.956 246.25 590.329L16.7103 457.805C6.96421 452.178 0.960327 441.779 0.960327 430.525V165.475C0.960327 154.221 6.9642 143.822 16.7103 138.195L246.25 5.67062C255.996 0.0436921 268.004 0.0436845 277.75 5.67062Z" stroke="white"/>
-</svg>
+  final svgString =
+  '''<svg width="626" height="626" viewBox="0 0 626 626" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M626 313C626 379.605 604.753 444.473 565.35 498.172C525.946 551.87 470.44 591.6 406.904 611.582C343.367 631.564 275.113 630.757 212.066 609.279C149.019 587.801 94.4679 546.771 56.3444 492.156C18.2209 437.541 -1.48668 372.189 0.0874242 305.603C1.66153 239.017 24.4353 174.669 65.0969 121.916C105.759 69.1636 162.188 30.7573 226.179 12.2823C290.17 -6.19273 358.386 -3.77321 420.908 19.189L419.26 23.6763C357.693 1.06479 290.519 -1.31778 227.505 16.8751C164.491 35.068 108.924 72.8876 68.8831 124.834C28.8424 176.781 6.41652 240.146 4.86645 305.716C3.31639 371.285 22.723 435.639 60.2642 489.42C97.8055 543.201 151.524 583.604 213.608 604.754C275.691 625.904 342.903 626.699 405.47 607.022C468.036 587.345 522.694 548.222 561.496 495.344C600.298 442.465 621.22 378.588 621.22 313H626Z" fill="white" fill-opacity="0.26"/>
+</svg>''';
 
-          ''';
   var degradado = [
     Colors.teal.shade100.withOpacity(0.5),
     Colors.purpleAccent.withOpacity(0.1),
@@ -944,89 +976,183 @@ class _Fondo extends State<Fondo> {
     animate();
     fade();
 
+
+
     //desenfoque();
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       body: Center(
           child: ListView(
+
         children: [
           Container(
-            alignment: Alignment.topCenter,
-            color: Colors.black,
-            height: MediaQuery.of(context).size.height - 400,
+            height: MediaQuery.of(context).size.height - 180,
             width: MediaQuery.of(context).size.width,
-            child: Stack(
-                alignment: Alignment.center,
-                fit: StackFit.loose,
-                children: [
-                  for (var i = 1; i < 4; i++)
-                    AnimatedContainer(
-                      transform: Matrix4.rotationZ(_rotation * i),
-                      transformAlignment: Alignment.center,
-                      width: _counter.toDouble() / (i * 0.9),
-                      height: _counter2.toDouble() / (i * 0.9),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0),
-                      ),
-                      duration: Duration(milliseconds: 300 * i),
-                      curve: Curves.easeInExpo,
-                      child: SvgPicture.string(svgString),
-                    ),
-                  BackdropFilter(
-                      filter: ImageFilter.blur(
-                          sigmaX: _blurEffect, sigmaY: _blurEffect),
-                      // Ajusta los valores según prefieras
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          child: Container(
-                              alignment: Alignment.center,
-                              child: Flex(
-                                clipBehavior: Clip.antiAlias,
-                                direction: Axis.horizontal,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Flexible(
-                                      flex: 1,
-                                      child: Text("/ ",
-                                          style: TextStyle(
-                                              fontSize: fontSize,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white.withOpacity(
-                                                  _fade.toDouble())))),
-                                  Flexible(
-                                    flex: 10,
-                                    child: Text(
-                                      _textoAnimado,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        letterSpacing: 10,
-                                        fontSize: fontSize,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+            child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Flexible(
+                  flex: 7,
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    child: Stack(
+                        alignment: Alignment.center,
+                        fit: StackFit.passthrough,
+                        children: [
+                          for (var i = 1; i < 4; i++)
+                            AnimatedContainer(
+                              transform: Matrix4.rotationZ(_rotation * i),
+                              transformAlignment: Alignment.center,
+                              width: _counter.toDouble() / (i * 0.9),
+                              height: _counter2.toDouble() / (i * 0.9),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0),
+                              ),
+                              duration: Duration(milliseconds: 300 * i),
+                              curve: Curves.easeInExpo,
+                              child: SvgPicture.string(svgString),
+                            ),
+                          BackdropFilter(
+                              filter: ImageFilter.blur(
+                                  sigmaX: _blurEffect, sigmaY: _blurEffect),
+                              // Ajusta los valores según prefieras
+                              child: SizedBox(
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      child: Flex(
+                                        clipBehavior: Clip.antiAlias,
+                                        direction: Axis.horizontal,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Flexible(
+                                              flex: 1,
+                                              child: Text("/ ",
+                                                  style: TextStyle(
+                                                      fontSize: fontSize,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white
+                                                          .withOpacity(_fade
+                                                              .toDouble())))),
+                                          Flexible(
+                                            flex: 10,
+                                            child: Text(
+                                              _textoAnimado,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                letterSpacing: 10,
+                                                fontSize: fontSize,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Flexible(
+                                              flex: 1,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                constraints:
+                                                    const BoxConstraints(
+                                                  maxWidth: 30,
+                                                  maxHeight: 30,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white
+                                                      .withOpacity(
+                                                          _color.toDouble()),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                              ))
+                                        ],
+                                      )))),
+                        ]),
+                  ),
+                ),
+                Spacer(
+                  flex: 1,
+                ),
+                Flexible(
+                    flex: 3,
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                            flex: 2,
+                            child: Container(
+                                margin: const EdgeInsets.only(top: 60),
+                                child: Flex(
+                                  direction: Axis.vertical,
+                                  children: [
+                                    Icon(
+                                      Icons.file_copy_sharp,
+                                      color: Colors.white,
+                                      size: 24,
                                     ),
-                                  ),
-                                  Flexible(
-                                      flex: 1,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        constraints: const BoxConstraints(
-                                          maxWidth: 30,
-                                          maxHeight: 30,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white
-                                              .withOpacity(_color.toDouble()),
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                      ))
-                                ],
-                              )))),
-                ]),
+                                    Text(
+                                      (porfolio.tags.length).toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 24),
+                                    ),
+                                    Text(
+                                      "PROYECTOS",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ))),
+                        Flexible(
+                            flex: 1,
+                            child: Container(
+                              width: 50,
+                              child: SwipeUp(),
+                            )),
+                        Flexible(
+                            flex: 2,
+                            child: Container(
+                                margin: const EdgeInsets.only(top: 60),
+                                child: Flex(
+                                  direction: Axis.vertical,
+                                  children: [
+                                    Icon(
+                                      Icons.account_tree_outlined,
+                                      color: Colors.white,
+                                      size: 24,
+                                    ),
+                                    Text(
+                                      porfolio
+                                          .getTecnologias()
+                                          .toSet()
+                                          .length
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 24),
+                                    ),
+                                    Text(
+                                      "TECNOLOGÍAS",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    )),
+              ],
+            ),
           ),
           const StatsWidget()
         ],
@@ -1274,8 +1400,8 @@ class _SwipeUpState extends State<SwipeUp> {
   bool _isVisible = true;
   bool _haveMooved = false;
   int times = 0;
-  int expand = 16 ;
-
+  int expand = 0;
+  int width = 0;
   double margin = (MediaQueryData.fromView(window).size.height);
 
   Future<void> move() async {
@@ -1285,11 +1411,9 @@ class _SwipeUpState extends State<SwipeUp> {
         margin = 0;
 
         _haveMooved = true;
-
       });
       setState(() {
-
-        expand = 16;
+        expand = 10;
       });
     }
     await Future.delayed(const Duration(milliseconds: 300));
@@ -1298,57 +1422,22 @@ class _SwipeUpState extends State<SwipeUp> {
   @override
   Widget build(BuildContext context) {
     move();
-    return Container(
-      transform: Matrix4.rotationX(pi),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 1000),
+      width: width.toDouble(),
       child: Flex(
           direction: Axis.horizontal,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            for (var i = 16; i > 0; i--)
+            for (var i = 4; i > 0; i--)
               Flexible(
                   flex: 1,
                   child: AnimatedOpacity(
                       duration: Duration(milliseconds: 200),
                       opacity: _isVisible ? 1.0 : 0.0,
                       child: AnimatedContainer(
-                        margin:
-                            EdgeInsets.only(top: margin.toDouble() + expand * i),
-                        duration: Duration(milliseconds: 1000),
-                        curve: Curves.easeInOutExpo,
-                        height: 120,
-                        width: 2,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0),
-                              width: 0,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [
-                                Colors.black.withOpacity(0.0),
-                                Colors.black.withOpacity(0.1),
-                                Colors.black.withOpacity(0.3),
-                                Colors.black.withOpacity(0.4),
-                                Colors.black.withOpacity(0.5),
-                                Colors.black.withOpacity(0.6),
-                                Colors.blueAccent.withOpacity(0.8),
-                                Colors.cyanAccent.withOpacity(0.8),
-                                Colors.purpleAccent.withOpacity(0.6),
-                                Colors.white.withOpacity(1),
-                              ],
-                            )),
-                      ))),
-            for (var i = 0; i < 16; i++)
-              Flexible(
-                  flex: 1,
-                  child: AnimatedOpacity(
-                      duration: Duration(milliseconds: 200),
-                      opacity: _isVisible ? 1.0 : 0.0,
-                      child: AnimatedContainer(
-                        margin:
-                            EdgeInsets.only(top: margin.toDouble() + expand * i),
+                        margin: EdgeInsets.only(
+                            top: margin.toDouble() + expand * i),
                         duration: Duration(milliseconds: 1000),
                         curve: Curves.easeInOutExpo,
                         height: 120,
@@ -1375,7 +1464,43 @@ class _SwipeUpState extends State<SwipeUp> {
                                 Colors.white.withOpacity(1),
                               ],
                             )),
-                      )))
+                      ))),
+            for (var i = 0; i < 5; i++)
+              Flexible(
+                  flex: 1,
+                  child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 200),
+                      opacity: _isVisible ? 1.0 : 0.0,
+                      child: AnimatedContainer(
+                        margin: EdgeInsets.only(
+                            top: margin.toDouble() + expand * i),
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.easeInOutExpo,
+                        height: 120,
+                        width: 3,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0),
+                              width: 0,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.0),
+                                Colors.black.withOpacity(0.1),
+                                Colors.black.withOpacity(0.3),
+                                Colors.black.withOpacity(0.4),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.6),
+                                Colors.blueAccent.withOpacity(0.8),
+                                Colors.cyanAccent.withOpacity(0.8),
+                                Colors.purpleAccent.withOpacity(0.6),
+                                Colors.white.withOpacity(1),
+                              ],
+                            )),
+                      ))),
           ]),
     );
   }
