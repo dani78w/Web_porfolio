@@ -3,5 +3,5 @@
   Its made on flutter ( I will upload some builds of the proyects such as .apk and .exe inside other repositories if you need it ) 
   I hope that you like it 🤓
 ## LIVE WEB LINK
-  https://dani78w.github.io/Flutterbuildedweb/#/
+  http://danielarribas.work:5500
 
